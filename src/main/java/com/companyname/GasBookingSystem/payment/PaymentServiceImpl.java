@@ -36,10 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
     private BookingRepository bookingRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-    @Override
-    public Customer createuser(Customer customer) {
-        return this.customerRepository.save(customer);
-    }
+
     @Override
     public Cylinder addCylinder(Cylinder cylinder) {
         return this.cylinderRepository.save(cylinder);
@@ -76,12 +73,22 @@ public class PaymentServiceImpl implements PaymentService {
         if(bookingEntityOptional.isEmpty()) throw new PaymentException("The entered Id doesn't exist enter an valid booking id");
         Booking bookingId=bookingEntityOptional.get();
         Double price=bookingEntityOptional.get().getCylinder().getPrice();
+        Payment paymentEntity=null;
+        if(bookingId.getPayment()==null) {
+            paymentEntity=new Payment();
+            this.paymentRepository.save(paymentEntity);
+            bookingId.setPayment(paymentEntity);
+            this.bookingRepository.save(bookingId);
+        }
+        Optional<Payment> payment = this.paymentRepository.findById(bookingId.getPayment().getPaymentId());
+        paymentEntity=payment.get();
         if(bankId.getBalance()<price){
             bookingId.setStatus(BookingStatusType.Pending);
             this.bookingRepository.save(bookingId);
+            paymentEntity.setPaymentStatus(PaymentStatusType.Failed);
+            this.paymentRepository.save(paymentEntity);
             throw new PaymentException("The account balance is insufficent");
         }
-        Payment paymentEntity=new Payment();
         Double balance=bankId.getBalance()-price;
         bankId.setBalance(balance);
         this.bankRepository.save(bankId);
@@ -134,11 +141,11 @@ public class PaymentServiceImpl implements PaymentService {
         viewCustomerDTO.setMybookings(customer.getBookingList());
         viewCustomerDTO.setEmail(customer.getEmail());
         viewCustomerDTO.setIsActive(customer.isIsActive());
+        viewCustomerDTO.setAddress(customer.getAddress());
         viewCustomerDTO.setMobileNo(customer.getMobileNo());
         return viewCustomerDTO;
 
     }
-
     @Override
     public List<Payment> getTransactions(Integer id) throws PaymentException {
         Optional<Customer> customerOptional=this.customerRepository.findById(id);

@@ -5,6 +5,7 @@ import com.companyname.GasBookingSystem.cylinder.Cylinder;
 import com.companyname.GasBookingSystem.cylinder.CylinderRepository;
 import com.companyname.GasBookingSystem.cylinder.CylinderType;
 import com.companyname.GasBookingSystem.cylinder.dto.CylinderGetDTO;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -40,9 +41,9 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setUserName(registeruser.getUserName());
             customerEntity.setPassword(registeruser.getPassword());
             customerEntity.setMobileNo(registeruser.getMobileNo());
+            customerEntity.setEmail(registeruser.getEmail());
             customerEntity.setIsActive(Boolean.TRUE);
             Address address = new Address();
-            //address.setId(registeruser.getId());
             address.setDoorNo(address.getDoorNo());
             address.setStreetName(address.getStreetName());
             address.setCity(address.getCity());
@@ -83,10 +84,10 @@ public class CustomerServiceImpl implements CustomerService {
             Customer customerEntity = customerRepository.getReferenceById(updateAccount.getId());
             customerEntity.setUserName(updateAccount.getUserName());
             customerEntity.setEmail(updateAccount.getEmail());
-            customerEntity.setPassword(updateAccount.getEmail());
+            customerEntity.setPassword(updateAccount.getPassword());
             customerEntity.setMobileNo(updateAccount.getMobileNo());
             customerEntity.setIsActive(updateAccount.isIsActive());
-            customerRepository.save(customerEntity);
+            return customerRepository.save(customerEntity);
         }else {
             System.out.println("Enter valid Details");
         }

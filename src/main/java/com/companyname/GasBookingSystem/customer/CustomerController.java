@@ -4,6 +4,8 @@ package com.companyname.GasBookingSystem.customer;
 import com.companyname.GasBookingSystem.cylinder.Cylinder;
 import com.companyname.GasBookingSystem.cylinder.CylinderType;
 import com.companyname.GasBookingSystem.cylinder.dto.CylinderGetDTO;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -28,25 +30,29 @@ public class CustomerController {
     @Autowired
 
     private CustomerService customerService;
+
     @GetMapping("/availability/{type}")
     public List<Cylinder> getAllCylinders(@PathVariable("type") CylinderType cylindertype) {
         return this.customerService.getAllCylindersOfMedical(cylindertype);
     }
+
     @PostMapping("/register")
     public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException {
         return this.customerService.registerUser(Customer.builder().userName(newUser.getUserName()).password(newUser.getPassword()).mobileNo(newUser.getMobileNo()).email(newUser.getEmail()).build());
     }
+
     @PostMapping("/login/mobilenum")
     public Customer loginUserMobileNo(@RequestBody mobileNumLoginDTO loginMobile) throws CustomerException, AccountException {
         return this.customerService.loginUserMobileNo(Customer.builder().mobileNo(loginMobile.getMobileNo()).password(loginMobile.getPassword()).build());
     }
+
     @PostMapping("/login/userName")
     public Customer loginUserName(@RequestBody userNameLoginDTO nameLoginDTO) throws CustomerException, AccountException {
         return this.customerService.loginUserName(nameLoginDTO.getUserName(), nameLoginDTO.getPassword());
     }
+
     @PatchMapping("/updateProfile")
-    public Customer updateProfile(@RequestBody UpdateDTO updateAccount){
-        //return this.userService.updateProfile(updateAccount.getId(),updateAccount.getUserName(),updateAccount.getPassword(),updateAccount.getMobileNo(),updateAccount.getEmail(),updateAccount.isIsActive());
+    public Customer updateProfile(@RequestBody UpdateDTO updateAccount) {
         return this.customerService.updateProfile(updateAccount);
     }
 }
