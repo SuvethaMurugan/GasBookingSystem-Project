@@ -13,8 +13,9 @@ import com.companyname.GasBookingSystem.payment.dto.PaymentUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/users")
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
@@ -24,7 +25,7 @@ public class PaymentController {
         return this.paymentService.createuser(customer);
     }
     @PostMapping("/book")
-    public Cylinder createUser(@RequestBody Cylinder cylinder){
+    public Cylinder createCylinder(@RequestBody Cylinder cylinder){
         return this.paymentService.addCylinder(cylinder);
     }
     @PostMapping("/addcylinder")
@@ -43,6 +44,10 @@ public class PaymentController {
     public Customer getCustomer(@PathVariable("id") Integer id){
 
         return this.paymentService.getCustomer(id);
+    }
+    @GetMapping("/transaction/{id}")
+    public List<Payment> getTransactions(@PathVariable("id") Integer id) throws PaymentException{
+        return this.paymentService.getTransactions(id);
     }
     @GetMapping("viewprofile/{id}")
     public ViewCustomerDTO viewProfile(@PathVariable("id") Integer id) throws ViewCustomerProfileException {

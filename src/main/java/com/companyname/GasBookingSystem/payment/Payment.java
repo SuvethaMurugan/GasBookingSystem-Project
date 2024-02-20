@@ -21,6 +21,7 @@ public class Payment {
     private LocalDate paymentDate;
     @Column(name="Amount")
     private Double paymentAmount;
+    @Enumerated(EnumType.STRING)
     @Column(name="Payment_Status")
-    private String paymentStatus;
+    private PaymentStatusType paymentStatus;
 }
