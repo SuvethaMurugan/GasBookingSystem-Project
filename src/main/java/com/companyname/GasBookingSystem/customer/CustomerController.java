@@ -29,9 +29,9 @@ public class CustomerController {
 
     private CustomerService customerService;
     @GetMapping("/availability/{type}")
-    public List<Cylinder> getAllCylinders(@PathVariable("type") CylinderType cylindertype){
+    public List<Cylinder> getAllCylinders(@PathVariable("type") CylinderType cylindertype) {
         return this.customerService.getAllCylindersOfMedical(cylindertype);
-
+    }
     @PostMapping("/register")
     public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException {
         return this.customerService.registerUser(Customer.builder().userName(newUser.getUserName()).password(newUser.getPassword()).mobileNo(newUser.getMobileNo()).email(newUser.getEmail()).build());
