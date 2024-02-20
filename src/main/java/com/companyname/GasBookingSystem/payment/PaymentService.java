@@ -1,6 +1,7 @@
 package com.companyname.GasBookingSystem.payment;
 
 import com.companyname.GasBookingSystem.customer.Customer;
+import com.companyname.GasBookingSystem.customer.Exception.CustomerException;
 import com.companyname.GasBookingSystem.customer.dto.ViewCustomerDTO;
 import com.companyname.GasBookingSystem.customer.Exception.ViewCustomerProfileException;
 import com.companyname.GasBookingSystem.cylinder.dto.CylinderAddDTO;
@@ -14,7 +15,6 @@ import com.companyname.GasBookingSystem.payment.dto.PaymentUpdateDTO;
 import java.util.List;
 
 public interface PaymentService {
-     Customer createuser(Customer customer);
 
      Cylinder addCylinder(Cylinder cylinder);
      Customer addCylinderToCustomer(CylinderAddDTO cylinderAddDTO) throws AddCylinderException;
