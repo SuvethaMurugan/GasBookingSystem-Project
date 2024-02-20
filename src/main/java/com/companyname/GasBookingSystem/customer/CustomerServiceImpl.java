@@ -1,10 +1,19 @@
 package com.companyname.GasBookingSystem.customer;
 
+
+import com.companyname.GasBookingSystem.cylinder.Cylinder;
+import com.companyname.GasBookingSystem.cylinder.CylinderRepository;
+import com.companyname.GasBookingSystem.cylinder.CylinderType;
+import com.companyname.GasBookingSystem.cylinder.dto.CylinderGetDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+    
+    
 import com.companyname.GasBookingSystem.address.Address;
 import com.companyname.GasBookingSystem.address.AddressRepository;
 import com.companyname.GasBookingSystem.customer.Exception.CustomerException;
 import com.companyname.GasBookingSystem.customer.dto.UpdateDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountException;
@@ -16,7 +25,8 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     @Autowired
     private AddressRepository addressRepository;
-
+    @Autowired
+    private CylinderRepository cylinderRepository;
     @Override
     public Customer registerUser(Customer registeruser) throws CustomerException {
         Customer mobileNum= this.customerRepository.findByMobileNo(registeruser.getMobileNo());
@@ -58,13 +68,15 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer loginUserName(String userName, String password) throws CustomerException {
         Customer nameLogin= this.customerRepository.findByUserName(userName);
         if(userName.isEmpty()) throw new CustomerException("Enter valid UserName");
-       // Customer nameLogin = CustomerRepository.findByUserName(userName);
         if (nameLogin != null && nameLogin.getPassword().equals(password)) {
             return this.customerRepository.findByUserName(userName);
         }
         return null;
     }
-
+    @Override
+    public List<Cylinder> getAllCylindersOfMedical(CylinderType type) {
+         return this.cylinderRepository.findAllByType(type);
+    }
     @Override
     public Customer updateProfile(UpdateDTO updateAccount) {
         if (customerRepository.existsById(updateAccount.getId())){

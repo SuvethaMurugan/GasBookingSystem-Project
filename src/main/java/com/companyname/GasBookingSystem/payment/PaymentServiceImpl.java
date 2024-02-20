@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,17 +38,8 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
     @Override
     public Customer createuser(Customer customer) {
-        Bank bank=new Bank();
-        bank.setBranch(customer.getBank().getBranch());
-        bank.setAccountNo(customer.getBank().getAccountNo());
-        bank.setBankName(customer.getBank().getBankName());
-        bank.setBalance(customer.getBank().getBalance());
-        bank.setIsActive(customer.getBank().getIsActive());
-        this.bankRepository.save(bank);
-        customer.setBank(bank);
         return this.customerRepository.save(customer);
     }
-
     @Override
     public Cylinder addCylinder(Cylinder cylinder) {
         return this.cylinderRepository.save(cylinder);
@@ -68,28 +61,31 @@ public class PaymentServiceImpl implements PaymentService {
         return this.customerRepository.save(customerId);
 
     }
-
     @Override
-    @Transactional(rollbackOn = {PaymentException.class})
+    @Transactional
     public Booking paymentCylinder(PaymentUpdateDTO paymentDTO) throws PaymentException {
         Optional<Customer> customerEntityOptional=this.customerRepository.findById(paymentDTO.getCustomerId());
         if(customerEntityOptional.isEmpty()) throw new PaymentException("The account does not exists");
         Customer customerId=customerEntityOptional.get();
         if(customerId.getBookingList().isEmpty()) throw new PaymentException("The Booking list is empty! Add a cylinder to book");
+        if(customerId.getBank()==null) throw new PaymentException("The Bank should be registered for the payment transaction");
         Optional<Bank> bankEntityOptional=this.bankRepository.findById(customerId.getBank().getBankId());
         Bank bankId=bankEntityOptional.get();
         if(bankId.getIsActive()==null) throw new PaymentException("The bank account is not active! Register the Bank account");
         Optional<Booking> bookingEntityOptional=this.bookingRepository.findById(paymentDTO.getBookingId());
         if(bookingEntityOptional.isEmpty()) throw new PaymentException("The entered Id doesn't exist enter an valid booking id");
         Booking bookingId=bookingEntityOptional.get();
-        if(bookingId.getStatus()!=null && bookingId.getStatus().equals("BOOKED")) throw new PaymentException("The amount is paid for the given booking Id");
         Double price=bookingEntityOptional.get().getCylinder().getPrice();
-        if(bankId.getBalance()<price) throw new PaymentException("The account balance is insufficent");
+        if(bankId.getBalance()<price){
+            bookingId.setStatus(BookingStatusType.Pending);
+            this.bookingRepository.save(bookingId);
+            throw new PaymentException("The account balance is insufficent");
+        }
+        Payment paymentEntity=new Payment();
         Double balance=bankId.getBalance()-price;
         bankId.setBalance(balance);
         this.bankRepository.save(bankId);
-        Payment paymentEntity=new Payment();
-        paymentEntity.setPaymentStatus("PAID");
+        paymentEntity.setPaymentStatus(PaymentStatusType.Paid);
         paymentEntity.setPaymentDate(LocalDate.now());
         paymentEntity.setPaymentType("Online Mode");
         paymentEntity.setPaymentAmount(price);
@@ -113,12 +109,14 @@ public class PaymentServiceImpl implements PaymentService {
     public Customer updateBankAccount(BankUpdateDTO bankUpdateDTO) {
         Optional<Customer> customer=this.customerRepository.findById(bankUpdateDTO.getCustomerId());
         Customer customer1 =customer.get();
-        Bank bank= customer1.getBank();
+        Bank bank=new Bank();
         bank.setAccountNo(bankUpdateDTO.getAccountNo());
         bank.setBankName(bankUpdateDTO.getBankName());
         bank.setBranch(bankUpdateDTO.getBankName());
         bank.setBalance(bankUpdateDTO.getBalance());
         bank.setIsActive(Boolean.TRUE);
+        customer1.setBank(bank);
+        bank.setCustomer(customer1);
         this.bankRepository.save(bank);
         return this.customerRepository.save(customer1);
 
@@ -138,6 +136,19 @@ public class PaymentServiceImpl implements PaymentService {
         viewCustomerDTO.setIsActive(customer.isIsActive());
         viewCustomerDTO.setMobileNo(customer.getMobileNo());
         return viewCustomerDTO;
+
+    }
+
+    @Override
+    public List<Payment> getTransactions(Integer id) throws PaymentException {
+        Optional<Customer> customerOptional=this.customerRepository.findById(id);
+        if(customerOptional.isEmpty()) throw new PaymentException("Enter an valid Id");
+        Customer customerid=customerOptional.get();
+        List<Booking> bookingList=customerid.getBookingList();
+        if(bookingList.isEmpty()) throw new PaymentException("No bookings were made");
+        List<Payment> paymentList=new ArrayList<>();
+        for(Booking bookings: bookingList) paymentList.add(bookings.getPayment());
+        return paymentList;
 
     }
 }

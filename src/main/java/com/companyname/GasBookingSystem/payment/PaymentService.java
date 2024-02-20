@@ -11,6 +11,8 @@ import com.companyname.GasBookingSystem.cylinder.Exception.AddCylinderException;
 import com.companyname.GasBookingSystem.payment.Exception.PaymentException;
 import com.companyname.GasBookingSystem.payment.dto.PaymentUpdateDTO;
 
+import java.util.List;
+
 public interface PaymentService {
      Customer createuser(Customer customer);
 
@@ -23,4 +25,6 @@ public interface PaymentService {
      Customer updateBankAccount(BankUpdateDTO bankUpdateDTO);
 
      ViewCustomerDTO viewProfile(Integer id) throws ViewCustomerProfileException;
+
+     List<Payment> getTransactions(Integer id)throws PaymentException;
 }
