@@ -5,16 +5,19 @@ import com.companyname.GasBookingSystem.bank.Bank;
 
 import com.companyname.GasBookingSystem.booking.Booking;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Customer {
     @Id
     @GeneratedValue(strategy =GenerationType.AUTO)
@@ -23,10 +26,13 @@ public class Customer {
     @Column(name="User_Name")
     private String userName;
     @Column(name="Password")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password should have at least one digit, special character, uppercase letter, and no space")
     private String password;
     @Column(name="Email_ID")
+    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Enter a valid mail ID (Eg.example@domain.com")
     private String email;
     @Column(name="Mobile_No")
+    @Size(min = 0, max = 10)
     private String mobileNo;
     @Column(name="IsActive")
     private boolean IsActive;
@@ -36,4 +42,17 @@ public class Customer {
     private Bank bank;
     @OneToMany
     private List<Booking> bookingList;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return IsActive == customer.IsActive && Objects.equals(id, customer.id) && Objects.equals(userName, customer.userName) && Objects.equals(password, customer.password) && Objects.equals(email, customer.email) && Objects.equals(mobileNo, customer.mobileNo) && Objects.equals(address, customer.address) && Objects.equals(bank, customer.bank) && Objects.equals(bookingList, customer.bookingList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userName, password, email, mobileNo, IsActive, address, bank, bookingList);
+    }
 }
