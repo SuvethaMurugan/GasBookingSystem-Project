@@ -9,6 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.companyname.GasBookingSystem.booking.Booking;
+import com.companyname.GasBookingSystem.booking.BookingRepository;
+import com.companyname.GasBookingSystem.customer.CustomerService;
+import com.sun.source.tree.LambdaExpressionTree;
+
+import java.time.LocalDate;
+
+
 @Service
 public class AdminServiceImpl implements AdminService{
     @Autowired
@@ -47,5 +55,10 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public String adminLogout(String email, String password) {
         return "Logged Out Successfully";
+    }
+    @Override
+    public List<Booking> getAllListOfCylinders() {
+        return this.bookingRepository.findAllByDeliveryDate(LocalDate.now());
+
     }
 }

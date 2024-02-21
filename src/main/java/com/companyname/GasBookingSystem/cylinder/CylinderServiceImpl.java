@@ -1,4 +1,9 @@
 package com.companyname.GasBookingSystem.cylinder;
 
-public class CylinderServiceImpl {
+import org.springframework.stereotype.Service;
+
+@Service
+public class CylinderServiceImpl  {
+
+
 }
