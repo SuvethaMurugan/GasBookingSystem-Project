@@ -1,6 +1,8 @@
 package com.companyname.GasBookingSystem.customer;
 
 
+import com.companyname.GasBookingSystem.customer.Exception.InvalidEmailException;
+import com.companyname.GasBookingSystem.customer.Exception.InvalidPasswordException;
 import com.companyname.GasBookingSystem.cylinder.Cylinder;
 import com.companyname.GasBookingSystem.cylinder.CylinderType;
 import com.companyname.GasBookingSystem.cylinder.dto.CylinderGetDTO;
@@ -37,7 +39,7 @@ public class CustomerController {
 
 
     @PostMapping("/register")
-    public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException {
+    public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException, InvalidPasswordException, InvalidEmailException {
         return this.customerService.registerUser(Customer.builder().userName(newUser.getUserName()).password(newUser.getPassword()).mobileNo(newUser.getMobileNo()).email(newUser.getEmail()).build());
     }
 
@@ -52,7 +54,7 @@ public class CustomerController {
     }
 
     @PatchMapping("/updateProfile")
-    public Customer updateProfile(@RequestBody UpdateDTO updateAccount) {
+    public Customer updateProfile(@RequestBody UpdateDTO updateAccount) throws CustomerException {
         return this.customerService.updateProfile(updateAccount);
     }
 }
