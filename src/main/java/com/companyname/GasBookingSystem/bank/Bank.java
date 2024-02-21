@@ -1,5 +1,7 @@
 package com.companyname.GasBookingSystem.bank;
 
+import com.companyname.GasBookingSystem.customer.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +25,7 @@ public class Bank {
     private Double balance;
     @Column(name="IsActive")
     private Boolean isActive;
-
+    @OneToOne
+    @JsonIgnore
+    private Customer customer;
 }
