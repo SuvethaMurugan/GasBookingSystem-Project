@@ -28,13 +28,13 @@ import javax.security.auth.login.AccountException;
 @RestController
 public class CustomerController {
     @Autowired
-
     private CustomerService customerService;
 
     @GetMapping("/availability/{type}")
     public List<Cylinder> getAllCylinders(@PathVariable("type") CylinderType cylindertype) {
         return this.customerService.getAllCylindersOfMedical(cylindertype);
     }
+
 
     @PostMapping("/register")
     public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException {
