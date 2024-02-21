@@ -33,10 +33,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CylinderRepository cylinderRepository;
     @Override
-    public Customer registerUser(Customer registeruser) throws CustomerException {
+    public Customer registerUser(Customer registeruser) throws CustomerException, InvalidPasswordException, InvalidEmailException {
         Customer mobileNum= this.customerRepository.findByMobileNo(registeruser.getMobileNo());
         Customer nameLogin= this.customerRepository.findByUserName(registeruser.getUserName());
-        if(mobileNum != null) {
+        String MobileNumLength = registeruser.getMobileNo();
+        if (MobileNumLength.length() > 10){
+            throw new CustomerException("Enter a valid Mobile Number");
+        }
+        if(mobileNum != null ) {
             throw new CustomerException("Mobile Number already exist");
         }
         if ((nameLogin != null)) throw new CustomerException("userName already exist");
@@ -44,8 +48,10 @@ public class CustomerServiceImpl implements CustomerService {
             Customer customerEntity = new Customer();
             customerEntity.setUserName(registeruser.getUserName());
             customerEntity.setPassword(registeruser.getPassword());
+            passwordValidator(customerEntity.getPassword());
             customerEntity.setMobileNo(registeruser.getMobileNo());
             customerEntity.setEmail(registeruser.getEmail());
+            emailValidator(customerEntity.getEmail());
             customerEntity.setIsActive(Boolean.TRUE);
             Address address = new Address();
             address.setDoorNo(address.getDoorNo());
@@ -107,7 +113,7 @@ public class CustomerServiceImpl implements CustomerService {
          return this.cylinderRepository.findAllByType(type);
     }
     @Override
-    public Customer updateProfile(UpdateDTO updateAccount) {
+    public Customer updateProfile(UpdateDTO updateAccount) throws CustomerException {
         if (customerRepository.existsById(updateAccount.getId())){
             Customer customerEntity = customerRepository.getReferenceById(updateAccount.getId());
             customerEntity.setUserName(updateAccount.getUserName());
@@ -115,11 +121,17 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setPassword(updateAccount.getPassword());
             customerEntity.setMobileNo(updateAccount.getMobileNo());
             customerEntity.setIsActive(updateAccount.isIsActive());
+            Address address = new Address();
+            address.setDoorNo(address.getDoorNo());
+            address.setStreetName(address.getStreetName());
+            address.setCity(address.getCity());
+            address.setPinCode(address.getPinCode());
+            this.addressRepository.save(address);
+            customerEntity.setAddress(address);
             return customerRepository.save(customerEntity);
         }else {
-            System.out.println("Enter valid Details");
+            throw new CustomerException("Enter valid Customer Details");
         }
-        return null;
     }
 }
 
