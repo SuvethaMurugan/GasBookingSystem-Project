@@ -14,10 +14,14 @@ import java.util.List;
 import com.companyname.GasBookingSystem.address.Address;
 import com.companyname.GasBookingSystem.address.AddressRepository;
 import com.companyname.GasBookingSystem.customer.Exception.CustomerException;
+import com.companyname.GasBookingSystem.customer.Exception.InvalidEmailException;
+import com.companyname.GasBookingSystem.customer.Exception.InvalidPasswordException;
 import com.companyname.GasBookingSystem.customer.dto.UpdateDTO;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -55,8 +59,32 @@ public class CustomerServiceImpl implements CustomerService {
             return null;
         }
     }
+    public boolean passwordValidator(String password) throws InvalidPasswordException {
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
+        if(matcher.matches()){
+            return true;
+        }else{
+            throw new InvalidPasswordException("Password should not contain any space.\n" +
+                    "Password should contain at least one digit(0-9).\n" +
+                    "Password length should be between 8 to 15 characters.\n" +
+                    "Password should contain at least one lowercase letter(a-z).\n" +
+                    "Password should contain at least one uppercase letter(A-Z).\n" +
+                    "Password should contain at least one special character ( @, #, %, &, !, $, etc….).");
+        }
+    }
 
-
+    public boolean emailValidator(String email) throws InvalidEmailException {
+        String regex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        if(matcher.matches()){
+            return true;
+        }else{
+            throw new InvalidEmailException("Enter A valid Email Address");
+        }
+    }
     public Customer loginUserMobileNo(Customer loginMobile) throws CustomerException {
         Customer mobileNum = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
         if(mobileNum == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");

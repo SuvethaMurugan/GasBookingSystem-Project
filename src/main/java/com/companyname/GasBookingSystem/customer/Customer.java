@@ -26,10 +26,8 @@ public class Customer {
     @Column(name="User_Name")
     private String userName;
     @Column(name="Password")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password should have at least one digit, special character, uppercase letter, and no space")
     private String password;
     @Column(name="Email_ID")
-    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Enter a valid mail ID (Eg.example@domain.com")
     private String email;
     @Column(name="Mobile_No")
     @Size(min = 0, max = 10)
