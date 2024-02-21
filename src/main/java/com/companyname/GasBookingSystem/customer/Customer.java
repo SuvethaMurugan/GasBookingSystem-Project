@@ -30,7 +30,6 @@ public class Customer {
     @Column(name="Email_ID")
     private String email;
     @Column(name="Mobile_No")
-    @Size(min = 0, max = 10)
     private String mobileNo;
     @Column(name="IsActive")
     private boolean IsActive;
