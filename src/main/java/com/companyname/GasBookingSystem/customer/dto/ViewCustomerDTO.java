@@ -1,5 +1,6 @@
 package com.companyname.GasBookingSystem.customer.dto;
 
+import com.companyname.GasBookingSystem.address.Address;
 import com.companyname.GasBookingSystem.bank.Bank;
 import com.companyname.GasBookingSystem.booking.Booking;
 import jakarta.persistence.OneToMany;
@@ -20,6 +21,8 @@ public class ViewCustomerDTO {
     private String userName;
     private String email;
     private String mobileNo;
+    @OneToOne
+    private Address address;
     private boolean IsActive;
     @OneToOne
     private Bank bank;

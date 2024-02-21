@@ -13,20 +13,12 @@ import com.companyname.GasBookingSystem.payment.dto.PaymentUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/users")
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
-
-    @PostMapping("/create")
-    public Customer createUser(@RequestBody Customer customer){
-        return this.paymentService.createuser(customer);
-    }
-    @PostMapping("/book")
-    public Cylinder createUser(@RequestBody Cylinder cylinder){
-        return this.paymentService.addCylinder(cylinder);
-    }
     @PostMapping("/addcylinder")
     public Customer addcylinderToUser(@RequestBody CylinderAddDTO cylinderAddDTO) throws AddCylinderException {
         return this.paymentService.addCylinderToCustomer(cylinderAddDTO);
@@ -35,16 +27,19 @@ public class PaymentController {
     public Booking paymentForCylinder(@RequestBody PaymentUpdateDTO paymentDTO) throws PaymentException {
         return this.paymentService.paymentCylinder(paymentDTO);
     }
-    @PatchMapping("/update/bank")
+    @PatchMapping("update/bank")
     public Customer updateBankAccount(@RequestBody BankUpdateDTO bankUpdateDTO){
         return this.paymentService.updateBankAccount(bankUpdateDTO);
     }
     @GetMapping("/customer/{id}")
     public Customer getCustomer(@PathVariable("id") Integer id){
-
         return this.paymentService.getCustomer(id);
     }
-    @GetMapping("viewprofile/{id}")
+    @GetMapping("/transaction/{id}")
+    public List<Payment> getTransactions(@PathVariable("id") Integer id) throws PaymentException{
+        return this.paymentService.getTransactions(id);
+    }
+    @GetMapping("profile/{id}")
     public ViewCustomerDTO viewProfile(@PathVariable("id") Integer id) throws ViewCustomerProfileException {
         return this.paymentService.viewProfile(id);
     }
