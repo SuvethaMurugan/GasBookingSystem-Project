@@ -10,11 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
-
         private Integer customerId;
         private Integer CylinderId;
-
-
-
 }
 

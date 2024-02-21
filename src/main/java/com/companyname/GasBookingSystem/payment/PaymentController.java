@@ -19,15 +19,11 @@ import java.util.List;
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
-    @PostMapping("/addcylinder")
-    public Customer addcylinderToUser(@RequestBody CylinderAddDTO cylinderAddDTO) throws AddCylinderException {
-        return this.paymentService.addCylinderToCustomer(cylinderAddDTO);
-    }
     @PostMapping("/book/payment")
     public Booking paymentForCylinder(@RequestBody PaymentUpdateDTO paymentDTO) throws PaymentException {
         return this.paymentService.paymentCylinder(paymentDTO);
     }
-    @PatchMapping("update/bank")
+    @PatchMapping("/bank")
     public Customer updateBankAccount(@RequestBody BankUpdateDTO bankUpdateDTO){
         return this.paymentService.updateBankAccount(bankUpdateDTO);
     }

@@ -36,28 +36,6 @@ public class PaymentServiceImpl implements PaymentService {
     private BookingRepository bookingRepository;
     @Autowired
     private PaymentRepository paymentRepository;
-
-    @Override
-    public Cylinder addCylinder(Cylinder cylinder) {
-        return this.cylinderRepository.save(cylinder);
-    }
-
-    @Override
-    public Customer addCylinderToCustomer(CylinderAddDTO cylinderAddDTO) throws AddCylinderException {
-        Optional<Customer> customerIdOptional=this.customerRepository.findById(cylinderAddDTO.getCustomerId());
-        Optional<Cylinder> cylinderIdOptional=this.cylinderRepository.findById(cylinderAddDTO.getCylinderId());
-        Customer customerId=customerIdOptional.get();
-        Cylinder cylinderId=cylinderIdOptional.get();
-        if(!cylinderId.getIsActive()) throw new AddCylinderException("Enter an valid cylinder ID");
-        cylinderId.setIsActive(Boolean.FALSE);
-        this.cylinderRepository.save(cylinderId);
-        Booking booking =new Booking();
-        booking.setCylinder(cylinderId);
-        this.bookingRepository.save(booking);
-        customerId.getBookingList().add(booking);
-        return this.customerRepository.save(customerId);
-
-    }
     @Override
     @Transactional
     public Booking paymentCylinder(PaymentUpdateDTO paymentDTO) throws PaymentException {
@@ -72,6 +50,8 @@ public class PaymentServiceImpl implements PaymentService {
         Optional<Booking> bookingEntityOptional=this.bookingRepository.findById(paymentDTO.getBookingId());
         if(bookingEntityOptional.isEmpty()) throw new PaymentException("The entered Id doesn't exist enter an valid booking id");
         Booking bookingId=bookingEntityOptional.get();
+        BookingStatusType bookingStatus=bookingId.getStatus();
+        if(bookingStatus.equals(BookingStatusType.Booked)) throw new PaymentException("The payment for this booking is paid");
         Double price=bookingEntityOptional.get().getCylinder().getPrice();
         Payment paymentEntity=null;
         if(bookingId.getPayment()==null) {
