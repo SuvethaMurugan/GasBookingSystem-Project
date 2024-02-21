@@ -1,6 +1,7 @@
 package com.companyname.GasBookingSystem.admin;
 
 import com.companyname.GasBookingSystem.admin.Exception.AdminException;
+import com.companyname.GasBookingSystem.booking.BookingService;
 import com.companyname.GasBookingSystem.customer.Customer;
 import com.companyname.GasBookingSystem.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class AdminServiceImpl implements AdminService{
     private CustomerRepository customerRepository;
     @Autowired
     private AdminRepository adminRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
     @Override
     public List<Customer> getAllCustomers() {
         return this.customerRepository.findAll();
