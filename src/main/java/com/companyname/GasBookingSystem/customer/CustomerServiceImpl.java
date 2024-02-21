@@ -92,8 +92,11 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer loginUserMobileNo(Customer loginMobile) throws CustomerException {
         Customer mobileNum = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
         if(mobileNum == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");
-        Customer numberLogin = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
-        if (numberLogin != null && numberLogin.getPassword().equals(loginMobile.getPassword())) {
+        //Customer mobileNum = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
+        if (mobileNum != null && mobileNum.getPassword().equals(loginMobile.getPassword())) {
+            Customer customerEntity = new Customer();
+            Address address = new Address();
+            customerEntity.setAddress(address);
             return this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
         }
         return null;
@@ -120,10 +123,10 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setMobileNo(updateAccount.getMobileNo());
             customerEntity.setIsActive(updateAccount.isIsActive());
             Address address = new Address();
-            address.setDoorNo(address.getDoorNo());
-            address.setStreetName(address.getStreetName());
-            address.setCity(address.getCity());
-            address.setPinCode(address.getPinCode());
+            address.setDoorNo(updateAccount.getAddress().getDoorNo());
+            address.setStreetName(updateAccount.getAddress().getStreetName());
+            address.setCity(updateAccount.getAddress().getCity());
+            address.setPinCode(updateAccount.getAddress().getPinCode());
             this.addressRepository.save(address);
             customerEntity.setAddress(address);
             return customerRepository.save(customerEntity);
