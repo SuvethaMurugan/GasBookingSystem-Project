@@ -5,9 +5,6 @@ import com.companyname.GasBookingSystem.customer.Exception.InvalidEmailException
 import com.companyname.GasBookingSystem.customer.Exception.InvalidPasswordException;
 import com.companyname.GasBookingSystem.cylinder.Cylinder;
 import com.companyname.GasBookingSystem.cylinder.CylinderType;
-import com.companyname.GasBookingSystem.cylinder.dto.CylinderGetDTO;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 

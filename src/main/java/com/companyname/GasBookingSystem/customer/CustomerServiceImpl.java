@@ -4,8 +4,6 @@ package com.companyname.GasBookingSystem.customer;
 import com.companyname.GasBookingSystem.cylinder.Cylinder;
 import com.companyname.GasBookingSystem.cylinder.CylinderRepository;
 import com.companyname.GasBookingSystem.cylinder.CylinderType;
-import com.companyname.GasBookingSystem.cylinder.dto.CylinderGetDTO;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -19,7 +17,6 @@ import com.companyname.GasBookingSystem.customer.Exception.InvalidPasswordExcept
 import com.companyname.GasBookingSystem.customer.dto.UpdateDTO;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
