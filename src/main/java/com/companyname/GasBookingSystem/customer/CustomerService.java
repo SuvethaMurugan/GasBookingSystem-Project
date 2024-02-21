@@ -13,7 +13,7 @@ import jakarta.validation.ConstraintViolationException;
 import javax.security.auth.login.AccountException;
 
 public interface CustomerService {
-     List<Cylinder> getAllCylindersOfMedical(CylinderType type);
+
     Customer registerUser(Customer registeruser) throws CustomerException;
 
     Customer loginUserName(String userName, String password) throws CustomerException;
@@ -21,6 +21,7 @@ public interface CustomerService {
     Customer updateProfile(UpdateDTO updateAccount) ;
 
     Customer loginUserMobileNo(Customer loginMobile) throws CustomerException;
+    List<Cylinder> getAllCylindersOfMedical(CylinderType type);
 
 }
 
