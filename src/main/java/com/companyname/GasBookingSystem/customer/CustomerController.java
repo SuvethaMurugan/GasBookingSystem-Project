@@ -37,7 +37,7 @@ public class CustomerController {
 
     @PostMapping("/register")
     public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException, InvalidPasswordException, InvalidEmailException {
-        return this.customerService.registerUser(Customer.builder().userName(newUser.getUserName()).password(newUser.getPassword()).mobileNo(newUser.getMobileNo()).email(newUser.getEmail()).build());
+        return this.customerService.registerUser(Customer.builder().userName(newUser.getUserName()).password(newUser.getPassword()).mobileNo(newUser.getMobileNo()).email(newUser.getEmail()).address(newUser.getAddress()).build());
     }
 
     @PostMapping("/login/mobilenum")

@@ -15,11 +15,7 @@ import com.companyname.GasBookingSystem.payment.dto.PaymentUpdateDTO;
 import java.util.List;
 
 public interface PaymentService {
-
-     Cylinder addCylinder(Cylinder cylinder);
-     Customer addCylinderToCustomer(CylinderAddDTO cylinderAddDTO) throws AddCylinderException;
      Booking paymentCylinder(PaymentUpdateDTO paymentDTO) throws PaymentException;
-
      Customer getCustomer(Integer id);
 
      Customer updateBankAccount(BankUpdateDTO bankUpdateDTO);
