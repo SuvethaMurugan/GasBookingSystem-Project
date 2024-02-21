@@ -51,12 +51,13 @@ public class CustomerServiceImpl implements CustomerService {
             emailValidator(customerEntity.getEmail());
             customerEntity.setIsActive(Boolean.TRUE);
             Address address = new Address();
+            this.addressRepository.save(address);
+            customerEntity.setAddress(address);
             address.setDoorNo(registeruser.getAddress().getDoorNo());
             address.setStreetName(registeruser.getAddress().getStreetName());
             address.setCity(registeruser.getAddress().getCity());
             address.setPinCode(registeruser.getAddress().getPinCode());
             this.addressRepository.save(address);
-            customerEntity.setAddress(address);
             return customerRepository.save(customerEntity);
         }else{
             return null;

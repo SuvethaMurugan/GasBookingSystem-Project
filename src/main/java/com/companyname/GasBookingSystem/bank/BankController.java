@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BankController {
     @Autowired
     private BankService bankService;
-    @PatchMapping("/bank")
+    @PatchMapping("/login/bank")
     public Bank patchMapping(@RequestBody Bank bank){
         return this.bankService.patchMapping(bank);
     }

@@ -20,7 +20,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
     @GetMapping("/customers")
     public List<Customer> customerList() {
         return this.adminService.getAllCustomers();
