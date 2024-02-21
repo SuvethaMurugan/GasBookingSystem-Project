@@ -20,7 +20,6 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-
     @GetMapping("/customers")
     public List<Customer> customerList() {
         return this.adminService.getAllCustomers();
@@ -36,9 +35,9 @@ public class AdminController {
         return this.adminService.loginAdminEmail(adminEmail.getEmailId(), adminEmail.getPassword());
     }
     @PostMapping("/logout")
-    public String adminLogout(@RequestBody AdminLoginDTO logout){
-        return this.adminService.adminLogout(logout.getEmailId(),logout.getPassword());
-
+    public String adminLogout(@RequestBody AdminLoginDTO logout) {
+        return this.adminService.adminLogout(logout.getEmailId(), logout.getPassword());
+    }
     @GetMapping("/status")
     public List<Booking> getAllBookings(){
         return this.adminService.getAllListOfCylinders();
