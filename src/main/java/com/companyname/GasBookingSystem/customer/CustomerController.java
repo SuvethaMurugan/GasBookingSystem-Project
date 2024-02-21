@@ -16,7 +16,7 @@ import javax.security.auth.login.AccountException;
 @RestController
 public class CustomerController {
     @Autowired
-    public CustomerService customerService;
+    private CustomerService customerService;
     @PostMapping("/register")
     public Customer registerUser(@RequestBody registerUserDTO newUser) throws CustomerException {
         return this.customerService.registerUser(Customer.builder().userName(newUser.getUserName()).password(newUser.getPassword()).mobileNo(newUser.getMobileNo()).email(newUser.getEmail()).build());
