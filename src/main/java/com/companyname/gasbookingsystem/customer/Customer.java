@@ -30,7 +30,7 @@ public class Customer {
     @Column(name="Mobile_No")
     private String mobileNo;
     @Column(name="IsActive")
-    private boolean IsActive;
+    private boolean isActive;
     @OneToOne
     private Address address;
     @OneToOne
@@ -43,11 +43,11 @@ public class Customer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return IsActive == customer.IsActive && Objects.equals(id, customer.id) && Objects.equals(userName, customer.userName) && Objects.equals(password, customer.password) && Objects.equals(email, customer.email) && Objects.equals(mobileNo, customer.mobileNo) && Objects.equals(address, customer.address) && Objects.equals(bank, customer.bank) && Objects.equals(bookingList, customer.bookingList);
+        return isActive == customer.isActive && Objects.equals(id, customer.id) && Objects.equals(userName, customer.userName) && Objects.equals(password, customer.password) && Objects.equals(email, customer.email) && Objects.equals(mobileNo, customer.mobileNo) && Objects.equals(address, customer.address) && Objects.equals(bank, customer.bank) && Objects.equals(bookingList, customer.bookingList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, password, email, mobileNo, IsActive, address, bank, bookingList);
+        return Objects.hash(id, userName, password, email, mobileNo, isActive, address, bank, bookingList);
     }
 }
