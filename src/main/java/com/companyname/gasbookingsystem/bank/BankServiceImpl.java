@@ -5,8 +5,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BankServiceImpl implements BankService{
-    @Autowired
-    private BankRepository bankRepository;
+    private final BankRepository bankRepository;
+
+    public BankServiceImpl(BankRepository bankRepository) {
+        this.bankRepository = bankRepository;
+    }
+
     @Override
     public Bank patchMapping(Bank bank) {
         return this.bankRepository.save(bank);

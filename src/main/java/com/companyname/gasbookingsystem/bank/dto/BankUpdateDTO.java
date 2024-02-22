@@ -14,7 +14,7 @@ public class BankUpdateDTO {
     @NotNull(message = "Customer Id should not be null")
     private Integer customerId;
     @NotNull(message = "AccountNo Id should not be null")
-    private String AccountNo;
+    private String accountNo;
     @NotNull(message = "Balance should not be null")
     private Double balance;
     @NotNull(message = "Bank Name should not be null")
