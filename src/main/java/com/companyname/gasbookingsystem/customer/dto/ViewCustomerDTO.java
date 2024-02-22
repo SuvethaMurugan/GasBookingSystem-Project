@@ -23,9 +23,9 @@ public class ViewCustomerDTO {
     private String mobileNo;
     @OneToOne
     private Address address;
-    private boolean IsActive;
+    private boolean isActive;
     @OneToOne
     private Bank bank;
     @OneToMany
-    private List<Booking> Mybookings;
+    private List<Booking> mybookings;
 }
