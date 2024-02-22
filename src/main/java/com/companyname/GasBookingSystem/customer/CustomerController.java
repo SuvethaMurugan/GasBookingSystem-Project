@@ -42,7 +42,8 @@ public class CustomerController {
 
     @PostMapping("/login/mobilenum")
     public Customer loginUserMobileNo(@RequestBody mobileNumLoginDTO loginMobile) throws CustomerException, AccountException {
-        return this.customerService.loginUserMobileNo(Customer.builder().mobileNo(loginMobile.getMobileNo()).password(loginMobile.getPassword()).build());
+       // return this.customerService.loginUserMobileNo(Customer.builder().mobileNo(loginMobile.getMobileNo()).password(loginMobile.getPassword()).build());
+        return this.customerService.loginUserMobileNo(loginMobile.getMobileNo(), loginMobile.getPassword());
     }
 
     @PostMapping("/login/userName")

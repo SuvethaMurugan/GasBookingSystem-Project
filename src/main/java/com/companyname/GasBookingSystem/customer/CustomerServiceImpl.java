@@ -89,25 +89,35 @@ public class CustomerServiceImpl implements CustomerService {
             throw new InvalidEmailException("Enter A valid Email Address");
         }
     }
-    public Customer loginUserMobileNo(Customer loginMobile) throws CustomerException {
-        Customer mobileNum = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
-        if(mobileNum == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");
-        //Customer mobileNum = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
-        if (mobileNum != null && mobileNum.getPassword().equals(loginMobile.getPassword())) {
-            Customer customerEntity = new Customer();
-            Address address = new Address();
-            customerEntity.setAddress(address);
-            return this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
+    public Customer loginUserMobileNo(String mobileNo, String password) throws CustomerException {
+        Customer mobileNumLogin = this.customerRepository.findByMobileNo(mobileNo);
+        if(mobileNumLogin == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");
+        //Customer mobileNumLogin = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
+        if(mobileNumLogin.equals(mobileNo) && mobileNumLogin.equals(password)){
+            return this.customerRepository.findByMobileNoAndPassword(mobileNo,password);
         }
-        return null;
+        else if (mobileNumLogin != null && mobileNumLogin.getPassword().equals(password)) {
+//            Customer customerEntity = new Customer();
+//            Address address = new Address();
+//            customerEntity.setAddress(address);
+            return this.customerRepository.findByMobileNo(mobileNo);
+        }else{
+            throw new CustomerException("Credentials doesn't match");
+        }
     }
+
     public Customer loginUserName(String userName, String password) throws CustomerException {
         Customer nameLogin= this.customerRepository.findByUserName(userName);
-        if(userName.isEmpty()) throw new CustomerException("Enter valid UserName");
-        if (nameLogin != null && nameLogin.getPassword().equals(password)) {
+        if(userName.isEmpty() || nameLogin == null) throw new CustomerException("Enter valid UserName");
+        if (nameLogin.equals(userName) && nameLogin.equals(password)) {
+            return this.customerRepository.findByUserNameAndPassword(userName, password);
+        }
+        else if (nameLogin != null && nameLogin.getPassword().equals(password)) {
             return this.customerRepository.findByUserName(userName);
         }
-        return null;
+        else{
+            throw new CustomerException("Credentials doesn't match");
+        }
     }
     @Override
     public List<Cylinder> getAllCylindersOfMedical(CylinderType type) {
@@ -134,5 +144,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new CustomerException("Enter valid Customer Details");
         }
     }
+
+
 }
 
