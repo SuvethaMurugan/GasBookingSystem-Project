@@ -15,6 +15,6 @@ public class UpdateDTO {
         private String password;
         private String email;
         private String mobileNo;
-        private boolean IsActive;
+        private boolean isActive;
         private Address address;
 }
