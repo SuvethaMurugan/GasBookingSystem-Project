@@ -14,16 +14,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="Admin_Entity")
+@Table(name = "Admin")
 public class Admin {
     @Id
-    @Column(name="Admin_Id")
+    @Column(name = "Admin_Id")
     private Integer adminId;
-    @Column(name="User_Name")
+    @Column(name = "User_Name")
     private String userName;
-    @Column(name="Email_ID")
+    @Column(name = "Email_ID")
     private String email;
-    @Column(name="Password")
+    @Column(name = "Password")
     private String password;
 
 }
