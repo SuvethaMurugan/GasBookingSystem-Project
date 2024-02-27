@@ -5,12 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-//import address.*;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class registerUserDTO {
+public class RegisterUserDTO {
 
         private String userName;
         private String password;

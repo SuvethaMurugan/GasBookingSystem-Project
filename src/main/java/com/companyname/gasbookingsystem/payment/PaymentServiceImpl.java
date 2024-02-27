@@ -114,7 +114,7 @@ public class PaymentServiceImpl implements PaymentService {
         viewCustomerDTO.setUserName(customer.getUserName());
         viewCustomerDTO.setMybookings(customer.getBookingList());
         viewCustomerDTO.setEmail(customer.getEmail());
-        viewCustomerDTO.setIsActive(customer.isIsActive());
+        viewCustomerDTO.setActive(customer.isActive());
         viewCustomerDTO.setAddress(customer.getAddress());
         viewCustomerDTO.setMobileNo(customer.getMobileNo());
         return viewCustomerDTO;

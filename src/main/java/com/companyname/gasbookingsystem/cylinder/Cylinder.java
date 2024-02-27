@@ -12,7 +12,7 @@ public class Cylinder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="CylinderId")
-    private Integer CylinderId;
+    private Integer cylinderId;
     @Column(name="Type")
     @Enumerated(EnumType.STRING)
     private CylinderType type;

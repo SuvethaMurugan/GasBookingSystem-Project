@@ -3,13 +3,11 @@ package com.companyname.gasbookingsystem.admin;
 
 import com.companyname.gasbookingsystem.admin.DTO.AdminLoginDTO;
 import com.companyname.gasbookingsystem.admin.exception.AdminException;
+import com.companyname.gasbookingsystem.booking.Booking;
 import com.companyname.gasbookingsystem.customer.Customer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.companyname.gasbookingsystem.booking.Booking;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;

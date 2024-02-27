@@ -7,7 +7,6 @@ import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerRepository;
 import com.companyname.gasbookingsystem.cylinder.Cylinder;
 import com.companyname.gasbookingsystem.cylinder.CylinderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +16,15 @@ import java.util.Optional;
 @Transactional
 public class BookingServiceImpl implements BookingService {
 
-    @Autowired
-    private BookingRepository bookingRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private CylinderRepository cylinderRepository;
+    private final BookingRepository bookingRepository;
+    private final CustomerRepository customerRepository;
+    private final CylinderRepository cylinderRepository;
+
+    public BookingServiceImpl(BookingRepository bookingRepository, CustomerRepository customerRepository, CylinderRepository cylinderRepository) {
+        this.bookingRepository = bookingRepository;
+        this.customerRepository = customerRepository;
+        this.cylinderRepository = cylinderRepository;
+    }
 
     @Override
     public List<Booking> getAllBookings() {
@@ -34,8 +36,7 @@ public class BookingServiceImpl implements BookingService {
         if (booking.isEmpty()) {
             throw new BookingNotFoundException("Booking not found with id: " + id);
         }
-        Booking booking1=booking.get();
-        return booking1;
+        return booking.get();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
         }
         Customer customerId=customerIdOptional.get();
         Cylinder cylinderId=cylinderIdOptional.get();
-        if(!cylinderId.getIsActive()) throw new BookingNotFoundException("Enter an valid cylinder ID");
+        if(Boolean.FALSE.equals(cylinderId.getIsActive())) throw new BookingNotFoundException("Enter an valid cylinder ID");
         cylinderId.setIsActive(Boolean.FALSE);
         this.cylinderRepository.save(cylinderId);
         Booking booking =new Booking();
@@ -70,13 +71,6 @@ public class BookingServiceImpl implements BookingService {
         booking.setId(booking.getId());
         return bookingRepository.save(booking);
     }
-//    @Override
-//    public void deleteBooking(Integer id) throws BookingNotFoundException {
-//        if (!bookingRepository.existsById(id)) {
-//            throw new BookingNotFoundException("Booking not found with id: " + id);
-//        }
-//        bookingRepository.deleteById(id);
-//
-//    }
+
 
 }

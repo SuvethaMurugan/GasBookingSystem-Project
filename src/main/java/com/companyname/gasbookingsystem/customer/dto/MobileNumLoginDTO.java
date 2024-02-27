@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class mobileNumLoginDTO {
+public class MobileNumLoginDTO {
     private String mobileNo;
     private String password;
 }

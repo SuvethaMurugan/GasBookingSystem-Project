@@ -12,5 +12,5 @@ import lombok.Setter;
 public class CylinderAddDTO
 {
     private Integer customerId;
-    private Integer CylinderId;
+    private Integer cylinderId;
 }

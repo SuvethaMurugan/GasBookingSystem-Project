@@ -4,7 +4,6 @@ package com.companyname.gasbookingsystem.customer;
 import com.companyname.gasbookingsystem.cylinder.Cylinder;
 import com.companyname.gasbookingsystem.cylinder.CylinderRepository;
 import com.companyname.gasbookingsystem.cylinder.CylinderType;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
     
@@ -23,18 +22,22 @@ import java.util.regex.Pattern;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private AddressRepository addressRepository;
-    @Autowired
-    private CylinderRepository cylinderRepository;
+    private final CustomerRepository customerRepository;
+    private final AddressRepository addressRepository;
+    private final CylinderRepository cylinderRepository;
+
+    public CustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository, CylinderRepository cylinderRepository) {
+        this.customerRepository = customerRepository;
+        this.addressRepository = addressRepository;
+        this.cylinderRepository = cylinderRepository;
+    }
+
     @Override
     public Customer registerUser(Customer registeruser) throws CustomerException, InvalidPasswordException, InvalidEmailException {
         Customer mobileNum= this.customerRepository.findByMobileNo(registeruser.getMobileNo());
         Customer nameLogin= this.customerRepository.findByUserName(registeruser.getUserName());
-        String MobileNumLength = registeruser.getMobileNo();
-        if (MobileNumLength.length() > 10){
+        String mobileNumLength = registeruser.getMobileNo();
+        if (mobileNumLength.length() > 10){
             throw new CustomerException("Enter a valid Mobile Number");
         }
         if(mobileNum != null ) {
@@ -49,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setMobileNo(registeruser.getMobileNo());
             customerEntity.setEmail(registeruser.getEmail());
             emailValidator(customerEntity.getEmail());
-            customerEntity.setIsActive(Boolean.TRUE);
+            customerEntity.setActive(Boolean.TRUE);
             Address address = new Address();
             this.addressRepository.save(address);
             customerEntity.setAddress(address);
@@ -64,18 +67,13 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
     public boolean passwordValidator(String password) throws InvalidPasswordException {
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(password);
         if(matcher.matches()){
             return true;
         }else{
-            throw new InvalidPasswordException("Password should not contain any space.\n" +
-                    "Password should contain at least one digit(0-9).\n" +
-                    "Password length should be between 8 to 15 characters.\n" +
-                    "Password should contain at least one lowercase letter(a-z).\n" +
-                    "Password should contain at least one uppercase letter(A-Z).\n" +
-                    "Password should contain at least one special character ( @, #, %, &, !, $, etc….).");
+            throw new InvalidPasswordException("Password should not contain any space.Password should contain at least one digit(0-9).Password length should be between 8 to 15 characters.Password should contain at least one lowercase letter(a-z).Password should contain at least one uppercase letter(A-Z).Password should contain at least one special character ( @, #, %, &, !, $, etc….).");
         }
     }
 
@@ -92,14 +90,10 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer loginUserMobileNo(String mobileNo, String password) throws CustomerException {
         Customer mobileNumLogin = this.customerRepository.findByMobileNo(mobileNo);
         if(mobileNumLogin == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");
-        //Customer mobileNumLogin = this.customerRepository.findByMobileNo(loginMobile.getMobileNo());
         if(mobileNumLogin.equals(mobileNo) && mobileNumLogin.equals(password)){
             return this.customerRepository.findByMobileNoAndPassword(mobileNo,password);
         }
         else if (mobileNumLogin != null && mobileNumLogin.getPassword().equals(password)) {
-//            Customer customerEntity = new Customer();
-//            Address address = new Address();
-//            customerEntity.setAddress(address);
             return this.customerRepository.findByMobileNo(mobileNo);
         }else{
             throw new CustomerException("Credentials doesn't match");
@@ -131,7 +125,7 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setEmail(updateAccount.getEmail());
             customerEntity.setPassword(updateAccount.getPassword());
             customerEntity.setMobileNo(updateAccount.getMobileNo());
-            customerEntity.setIsActive(updateAccount.isIsActive());
+            customerEntity.setActive(updateAccount.isActive());
             Address address = new Address();
             address.setDoorNo(updateAccount.getAddress().getDoorNo());
             address.setStreetName(updateAccount.getAddress().getStreetName());
