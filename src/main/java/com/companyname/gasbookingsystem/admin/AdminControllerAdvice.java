@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public class AdminControllerAdvice {
     @ExceptionHandler(value = {AdminException.class})
-    public ResponseEntity<String> AdminException(AdminException e) {
+    public ResponseEntity<String> adminException(AdminException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
