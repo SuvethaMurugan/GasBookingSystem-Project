@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookingDTO {
         private Integer customerId;
-        private Integer CylinderId;
+        private Integer cylinderId;
 }
 

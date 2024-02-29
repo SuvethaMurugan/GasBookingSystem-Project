@@ -14,7 +14,7 @@ public interface BookingService {
 
     Booking updateBooking(Booking booking) throws BookingNotFoundException;
 
-   // void deleteBooking(Integer id) throws BookingNotFoundException;
+
 }
 
 
