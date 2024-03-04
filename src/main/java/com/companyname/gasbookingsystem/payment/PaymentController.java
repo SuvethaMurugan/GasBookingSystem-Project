@@ -5,6 +5,7 @@ import com.companyname.gasbookingsystem.customer.dto.ViewCustomerDTO;
 import com.companyname.gasbookingsystem.customer.exception.ViewCustomerProfileException;
 import com.companyname.gasbookingsystem.bank.dto.BankUpdateDTO;
 import com.companyname.gasbookingsystem.booking.Booking;
+import com.companyname.gasbookingsystem.payment.dto.BankLinkingDTO;
 import com.companyname.gasbookingsystem.payment.exception.BankUpdateException;
 import com.companyname.gasbookingsystem.payment.exception.PaymentException;
 import com.companyname.gasbookingsystem.payment.dto.PaymentUpdateDTO;
@@ -24,8 +25,8 @@ public class PaymentController {
         return this.paymentService.paymentCylinder(paymentDTO);
     }
     @PatchMapping("/bank")
-    public Customer updateBankAccount(@RequestBody BankUpdateDTO bankUpdateDTO) throws BankUpdateException {
-        return this.paymentService.updateBankAccount(bankUpdateDTO);
+    public Customer updateBankAccount(@RequestBody BankLinkingDTO bankUpdateDTO) throws BankUpdateException {
+        return this.paymentService.bankLinkingAccount(bankUpdateDTO);
     }
     @GetMapping("/transaction/{id}")
     public List<Payment> getTransactions(@PathVariable("id") Integer id) throws PaymentException{

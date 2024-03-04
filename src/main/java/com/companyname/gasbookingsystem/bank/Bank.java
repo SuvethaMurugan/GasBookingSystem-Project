@@ -4,27 +4,31 @@ import com.companyname.gasbookingsystem.customer.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="Bank_Id")
     private Integer bankId;
-    @Column(name="Account_No")
-    private String accountNo;
+    @Column(name="username")
+    private String username;
+    @Column(name="Password")
+    private String password;
     @Column(name="Bank_Name")
-    private String bankName;
+    private final String bankName="SBI";
     @Column(name="Branch")
-    private String branch;
+    private final String branch="Chennai";
     @Column(name="Balance")
     private Double balance;
     @Column(name="IsActive")
-    private Boolean isActive;
+    private final Boolean isActive=true;
     @OneToOne
     @JsonIgnore
     private Customer customer;

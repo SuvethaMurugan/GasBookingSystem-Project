@@ -35,7 +35,7 @@ public class Customer {
     private Address address;
     @OneToOne
     private Bank bank;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Booking> bookingList;
 
     @Override
@@ -49,5 +49,20 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(id, userName, password, email, mobileNo, isActive, address, bank, bookingList);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", isActive=" + isActive +
+                ", address=" + address +
+                ", bank=" + bank +
+                ", bookingList=" + bookingList +
+                '}';
     }
 }

@@ -28,4 +28,6 @@ public class ViewCustomerDTO {
     private Bank bank;
     @OneToMany
     private List<Booking> mybookings;
+
+
 }
