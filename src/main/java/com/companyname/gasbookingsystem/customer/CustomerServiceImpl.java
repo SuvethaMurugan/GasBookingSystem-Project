@@ -16,6 +16,7 @@ import com.companyname.gasbookingsystem.customer.exception.InvalidPasswordExcept
 import com.companyname.gasbookingsystem.customer.dto.UpdateDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer registerUser(Customer registeruser) throws CustomerException, InvalidPasswordException, InvalidEmailException {
         Customer mobileNum= this.customerRepository.findByMobileNo(registeruser.getMobileNo());
+        System.out.println(mobileNum);
         Customer nameLogin= this.customerRepository.findByUserName(registeruser.getUserName());
         String mobileNumLength = registeruser.getMobileNo();
         if (mobileNumLength.length() > 10){
