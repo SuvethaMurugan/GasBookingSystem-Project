@@ -126,19 +126,20 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setPassword(updateAccount.getPassword());
             customerEntity.setMobileNo(updateAccount.getMobileNo());
             customerEntity.setActive(updateAccount.isActive());
-            Address address = new Address();
-            address.setDoorNo(updateAccount.getAddress().getDoorNo());
-            address.setStreetName(updateAccount.getAddress().getStreetName());
-            address.setCity(updateAccount.getAddress().getCity());
-            address.setPinCode(updateAccount.getAddress().getPinCode());
-            this.addressRepository.save(address);
-            customerEntity.setAddress(address);
-            return customerRepository.save(customerEntity);
+            if(addressRepository.existsById(updateAccount.getId())) {
+                Address address = new Address();
+                address.setDoorNo(updateAccount.getAddress().getDoorNo());
+                address.setStreetName(updateAccount.getAddress().getStreetName());
+                address.setCity(updateAccount.getAddress().getCity());
+                address.setPinCode(updateAccount.getAddress().getPinCode());
+                this.addressRepository.save(address);
+                customerEntity.setAddress(address);
+                return customerRepository.save(customerEntity);
+            }
         }else {
             throw new CustomerException("Enter valid Customer Details");
         }
+        return null;
     }
-
-
 }
 
