@@ -8,7 +8,7 @@ import com.companyname.gasbookingsystem.booking.BookingStatusType;
 import com.companyname.gasbookingsystem.customer.*;
 import com.companyname.gasbookingsystem.customer.exception.ViewCustomerProfileException;
 import com.companyname.gasbookingsystem.customer.dto.ViewCustomerDTO;
-import com.companyname.gasbookingsystem.bank.dto.BankUpdateDTO;
+import com.companyname.gasbookingsystem.payment.dto.BankLinkingDTO;
 import com.companyname.gasbookingsystem.payment.exception.BankUpdateException;
 import com.companyname.gasbookingsystem.payment.exception.PaymentException;
 import com.companyname.gasbookingsystem.payment.dto.PaymentUpdateDTO;
@@ -86,19 +86,18 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Customer updateBankAccount(BankUpdateDTO bankUpdateDTO)  throws BankUpdateException {
+    public Customer bankLinkingAccount(BankLinkingDTO bankUpdateDTO)  throws BankUpdateException {
         Optional<Customer> customer=this.customerRepository.findById(bankUpdateDTO.getCustomerId());
-        if(customer.isEmpty()) throw new BankUpdateException("The customer is not found for the entered ID");
+        Optional<Bank> bank=this.bankRepository.findById(bankUpdateDTO.getBankId());
+        if(bank.isEmpty()) throw new BankUpdateException("Account doesn't exist");
+        if(customer.isEmpty()) throw new BankUpdateException("Customer doesn't exist");
         Customer customer1 =customer.get();
-        Bank bank=new Bank();
-        bank.setAccountNo(bankUpdateDTO.getAccountNo());
-        bank.setBankName(bankUpdateDTO.getBankName());
-        bank.setBranch(bankUpdateDTO.getBankName());
-        bank.setBalance(bankUpdateDTO.getBalance());
-        bank.setIsActive(Boolean.TRUE);
-        customer1.setBank(bank);
-        bank.setCustomer(customer1);
-        this.bankRepository.save(bank);
+        Bank bankAccount=bank.get();
+        String password=bankAccount.getPassword();
+        if(!password.equals(bankUpdateDTO.getPassword())) throw  new BankUpdateException("Entered User ID and Password doesn't exist");
+        customer1.setBank(bankAccount);
+        bankAccount.setCustomer(customer1);
+        this.bankRepository.save(bankAccount);
         return this.customerRepository.save(customer1);
 
     }
@@ -106,9 +105,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public ViewCustomerDTO viewProfile(Integer id) throws ViewCustomerProfileException {
         ViewCustomerDTO viewCustomerDTO =new ViewCustomerDTO();
-        Optional<Customer> viewuser=this.customerRepository.findById(id);
-        if(viewuser.isEmpty()) throw new ViewCustomerProfileException("The Entered Id doesn't exists! Enter an valid Id");
-        Customer customer=viewuser.get();
+        Optional<Customer> viewUser=this.customerRepository.findById(id);
+        if(viewUser.isEmpty()) throw new ViewCustomerProfileException("The Entered Id doesn't exists! Enter an valid Id");
+        Customer customer=viewUser.get();
         viewCustomerDTO.setId(customer.getId());
         viewCustomerDTO.setBank(customer.getBank());
         viewCustomerDTO.setUserName(customer.getUserName());
@@ -124,8 +123,8 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Payment> getTransactions(Integer id) throws PaymentException {
         Optional<Customer> customerOptional=this.customerRepository.findById(id);
         if(customerOptional.isEmpty()) throw new PaymentException("Enter an valid Id");
-        Customer customerid=customerOptional.get();
-        List<Booking> bookingList=customerid.getBookingList();
+        Customer customerId=customerOptional.get();
+        List<Booking> bookingList=customerId.getBookingList();
         if(bookingList.isEmpty()) throw new PaymentException("No bookings were made");
         List<Payment> paymentList=new ArrayList<>();
         for(Booking bookings: bookingList) paymentList.add(bookings.getPayment());
