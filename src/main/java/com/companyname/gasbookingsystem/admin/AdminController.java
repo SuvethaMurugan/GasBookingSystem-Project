@@ -1,6 +1,7 @@
 package com.companyname.gasbookingsystem.admin;
 
 
+import com.companyname.gasbookingsystem.admin.DTO.AdminEmailDto;
 import com.companyname.gasbookingsystem.admin.DTO.AdminLoginDTO;
 import com.companyname.gasbookingsystem.admin.exception.AdminException;
 import com.companyname.gasbookingsystem.booking.Booking;
@@ -26,18 +27,18 @@ public class AdminController {
     }
 
     @PostMapping("/login/adminId")
-    public Admin loginAdmin(@RequestBody AdminLoginDTO adminlogin) throws AdminException {
-        return this.adminService.loginAdminID(adminlogin.getAdminId(), adminlogin.getPassword());
+    public Admin loginAdminID(@RequestBody AdminLoginDTO adminlogin) throws AdminException {
+        return this.adminService.loginAdminID(adminlogin);
     }
 
     @PostMapping("/login/emailId")
-    public Admin loginAdminEmail(@RequestBody AdminLoginDTO adminEmail) throws AdminException {
-        return this.adminService.loginAdminEmail(adminEmail.getEmailId(), adminEmail.getPassword());
+    public Admin loginAdminEmail(@RequestBody AdminEmailDto adminEmail) throws AdminException {
+        return this.adminService.loginAdminEmail(adminEmail);
     }
 
     @PostMapping("/logout")
-    public String adminLogout(@RequestBody AdminLoginDTO logout) {
-        return this.adminService.adminLogout(logout.getEmailId(), logout.getPassword());
+    public String adminLogout(@RequestBody AdminEmailDto logout) {
+        return this.adminService.adminLogout(logout);
     }
 
     @GetMapping("/status")
