@@ -1,20 +1,29 @@
 package com.companyname.gasbookingsystem.cylinder;
 
+import com.companyname.gasbookingsystem.booking.Booking;
+import com.companyname.gasbookingsystem.booking.BookingRepository;
+import com.companyname.gasbookingsystem.cylinder.dto.BookedCylinderDTO;
 import com.companyname.gasbookingsystem.cylinder.exception.AddCylinderException;
 import com.companyname.gasbookingsystem.cylinder.exception.DeleteCylinderException;
 import com.companyname.gasbookingsystem.cylinder.exception.GetCylinderException;
 import com.companyname.gasbookingsystem.cylinder.exception.UpdateCylinderException;
 import com.companyname.gasbookingsystem.cylinder.dto.CylinderDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CylinderServiceImpl implements CylinderService{
     private final CylinderRepository cylinderRepository;
+    private final BookingRepository bookingRepository;
 
-    public CylinderServiceImpl(CylinderRepository cylinderRepository) {
+    public CylinderServiceImpl(CylinderRepository cylinderRepository, BookingRepository bookingRepository) {
         this.cylinderRepository = cylinderRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     @Override
@@ -63,6 +72,29 @@ public class CylinderServiceImpl implements CylinderService{
         Cylinder cylinder1=cylinder.get();
         cylinder1.setIsActive(Boolean.FALSE);
         return this.cylinderRepository.save(cylinder1);
+    }
+
+    @Override
+    public List<Cylinder> availableCylinder() {
+        List<Cylinder> cylinderList=cylinderRepository.findAll();
+        return cylinderList.stream().filter(l->l.getIsActive().equals(true)).toList();
+    }
+
+    @Override
+    public List<BookedCylinderDTO> BookedCylinder() {
+        List<BookedCylinderDTO> list=new ArrayList<>();
+        List<Booking> bookingList=this.bookingRepository.findAll();
+        for(Booking s:bookingList){
+            BookedCylinderDTO bookedCylinderDTO=new BookedCylinderDTO();
+            bookedCylinderDTO.setId(s.getId());
+            bookedCylinderDTO.setCylinderid(s.getCylinder().getCylinderId());
+            bookedCylinderDTO.setCylinderType(s.getCylinder().getType());
+            bookedCylinderDTO.setBookingDate(s.getBookingDate());
+            bookedCylinderDTO.setDeliveryDate(s.getDeliveryDate());
+            bookedCylinderDTO.setCustomerid(s.getCustomer().getId());
+            list.add(bookedCylinderDTO);
+        }
+        return list;
     }
 
 }
