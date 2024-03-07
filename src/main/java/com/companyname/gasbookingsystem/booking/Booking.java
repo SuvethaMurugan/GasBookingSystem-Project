@@ -29,7 +29,7 @@ public class Booking {
     private Payment payment;
     @OneToOne
     private Cylinder cylinder;
-    @OneToOne
+    @ManyToOne
     @JsonIgnore
     private Customer customer;
 }
