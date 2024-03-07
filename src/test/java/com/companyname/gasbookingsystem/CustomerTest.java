@@ -12,6 +12,7 @@ import com.companyname.gasbookingsystem.customer.exception.CustomerException;
 import com.companyname.gasbookingsystem.customer.exception.InvalidEmailException;
 import com.companyname.gasbookingsystem.customer.exception.InvalidPasswordException;
 import com.companyname.gasbookingsystem.cylinder.Cylinder;
+import com.companyname.gasbookingsystem.cylinder.CylinderType;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,7 @@ class CustomerTest {
         UserNameLoginDTO userNameLoginDTO;
         UpdateDTO updateDTO;
         RegisterUserDTO registerUserDTO;
+        CylinderType cylinderType;
 
 
         @BeforeEach
@@ -38,7 +40,8 @@ class CustomerTest {
             customer=Customer.builder().userName("Suvetha").password("Suvetha@123").mobileNo("9489696937").email("suvetha2003@gmail.com").address(address).build();
             mobileNumLoginDTO = new MobileNumLoginDTO("9489696937", "Suvetha@123");
             userNameLoginDTO = new UserNameLoginDTO("Suvetha", "Suvetha@123");
-            updateDTO = new UpdateDTO(1,"Suvetha","Suvetha@123","suvetha@gmail.com","9489696937",true,address);
+            updateDTO = new UpdateDTO(1,"Prathiksaa","Suvetha@123","suvetha@gmail.com","9489696937",true,address);
+
         }
         @AfterEach
         public void DeleteValue(){
@@ -61,7 +64,6 @@ class CustomerTest {
             } catch (CustomerException | InvalidEmailException | InvalidPasswordException e) {
                 throw new RuntimeException(e);
             }
-
         }
     @DisplayName("Customer Registration Test")
     @Test
@@ -368,7 +370,62 @@ class CustomerTest {
             Assertions.assertEquals("Credentials doesn't match",e.getMessage());
         }
     }
+    @DisplayName("Customer Registration Test")
+    @Test
+    void CustomerUpdateTest()
+    {
 
+        Cylinder cylinder=null;
+        Booking booking=null;
+        try {
+            Assertions.assertNotNull(customerService.registerUser(customer));
+
+        } catch (CustomerException | InvalidEmailException | InvalidPasswordException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            customerService.updateProfile(updateDTO);
+        } catch (CustomerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @DisplayName("Customer Registration Test")
+    @Test
+    void CustomerUpdateInvalidIDTest()
+    {
+
+        Cylinder cylinder=null;
+        Booking booking=null;
+        try {
+            Assertions.assertNotNull(customerService.registerUser(customer));
+
+        } catch (CustomerException | InvalidEmailException | InvalidPasswordException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            UpdateDTO InvalidupdateDTO = new UpdateDTO(2, "Prathiksaa", "Suvetha@123", "suvetha@gmail.com", "9489696937", true, address);
+            customerService.updateProfile(InvalidupdateDTO);
+        } catch (CustomerException e) {
+            Assertions.assertEquals("Enter valid Customer Details",e.getMessage());
+        }
+    }
+    @DisplayName("Customer Test")
+    @Test
+    void getAllCylinderMedicalTest(){
+            Assertions.assertNotNull(customerService.getAllCylindersOfSpecifiedType(CylinderType.Medical));
+    }
+    @DisplayName("Customer Test")
+    @Test
+    void getAllCylinderIndustryTest(){
+        Assertions.assertNotNull(customerService.getAllCylindersOfSpecifiedType(CylinderType.Industry));
+    }
+    @DisplayName("Customer Test")
+    @Test
+    void getAllCylinderHouseHoldTest(){
+        Assertions.assertNotNull(customerService.getAllCylindersOfSpecifiedType(CylinderType.HouseHold));
+    }
 }
 
 

@@ -33,7 +33,7 @@ public class CustomerController {
 
     @GetMapping("/availability/{type}")
     public List<Cylinder> getAllCylinders(@PathVariable("type") CylinderType cylindertype) {
-        return this.customerService.getAllCylindersOfMedical(cylindertype);
+        return this.customerService.getAllCylindersOfSpecifiedType(cylindertype);
     }
 
 
