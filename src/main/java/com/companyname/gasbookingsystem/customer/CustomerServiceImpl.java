@@ -16,7 +16,6 @@ import com.companyname.gasbookingsystem.customer.exception.InvalidPasswordExcept
 import com.companyname.gasbookingsystem.customer.dto.UpdateDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +39,9 @@ public class CustomerServiceImpl implements CustomerService {
         Customer nameLogin= this.customerRepository.findByUserName(registeruser.getUserName());
         String mobileNumLength = registeruser.getMobileNo();
         if (mobileNumLength.length() > 10){
+            throw new CustomerException("Enter a valid Mobile Number (length=10)");
+        }
+        if (mobileNumLength.length() < 10){
             throw new CustomerException("Enter a valid Mobile Number");
         }
         if(mobileNum != null ) {
@@ -64,9 +66,8 @@ public class CustomerServiceImpl implements CustomerService {
             address.setPinCode(registeruser.getAddress().getPinCode());
             this.addressRepository.save(address);
             return customerRepository.save(customerEntity);
-        }else{
-            return null;
         }
+        throw new CustomerException("Register using valid details");
     }
     public boolean passwordValidator(String password) throws InvalidPasswordException {
         String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
@@ -74,7 +75,8 @@ public class CustomerServiceImpl implements CustomerService {
         Matcher matcher = pattern.matcher(password);
         if(matcher.matches()){
             return true;
-        }else{
+        }
+        else{
             throw new InvalidPasswordException("Password should not contain any space.Password should contain at least one digit(0-9).Password length should be between 8 to 15 characters.Password should contain at least one lowercase letter(a-z).Password should contain at least one uppercase letter(A-Z).Password should contain at least one special character ( @, #, %, &, !, $, etc….).");
         }
     }
@@ -92,12 +94,12 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer loginUserMobileNo(String mobileNo, String password) throws CustomerException {
         Customer mobileNumLogin = this.customerRepository.findByMobileNo(mobileNo);
         if(mobileNumLogin == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");
-        if(mobileNumLogin.equals(mobileNo) && mobileNumLogin.equals(password)){
+        if(mobileNumLogin != null && mobileNumLogin.equals(mobileNo) && mobileNumLogin.equals(password)){
             return this.customerRepository.findByMobileNoAndPassword(mobileNo,password);
-        }
-        else if (mobileNumLogin != null && mobileNumLogin.getPassword().equals(password)) {
+        } else if (mobileNumLogin != null && mobileNumLogin.getPassword().equals(password)) {
             return this.customerRepository.findByMobileNo(mobileNo);
-        }else{
+        }
+        else{
             throw new CustomerException("Credentials doesn't match");
         }
     }
@@ -141,7 +143,7 @@ public class CustomerServiceImpl implements CustomerService {
         }else {
             throw new CustomerException("Enter valid Customer Details");
         }
-        return null;
+        throw new CustomerException("Enter valid Customer Details");
     }
 }
 

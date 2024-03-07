@@ -8,7 +8,7 @@ import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundExcepti
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
 import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerService;
-import com.companyname.gasbookingsystem.customer.dto.RegisterUserDTO;
+import com.companyname.gasbookingsystem.customer.dto.*;
 import com.companyname.gasbookingsystem.customer.exception.CustomerException;
 import com.companyname.gasbookingsystem.customer.exception.InvalidEmailException;
 import com.companyname.gasbookingsystem.customer.exception.InvalidPasswordException;
@@ -42,6 +42,11 @@ class GasBookingSystemApplicationTests {
 	Customer  customer;
 	RegisterUserDTO registerUserDTO;
     Address address;
+	MobileNumLoginDTO mobileNumLoginDTO;
+	UserNameLoginDTO userNameLoginDTO;
+	UpdateDTO updateDTO;
+
+
     @BeforeEach
     public void createCustomer(){
          address=new Address(1,12,"StreetName","Chennai","6000001");
