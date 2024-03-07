@@ -16,6 +16,7 @@ import com.companyname.gasbookingsystem.customer.exception.InvalidPasswordExcept
 import com.companyname.gasbookingsystem.customer.dto.UpdateDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,13 +119,15 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
     @Override
-    public List<Cylinder> getAllCylindersOfMedical(CylinderType type) {
+    public List<Cylinder> getAllCylindersOfSpecifiedType(CylinderType type) {
          return this.cylinderRepository.findAllByType(type);
     }
     @Override
     public Customer updateProfile(UpdateDTO updateAccount) throws CustomerException {
         if (customerRepository.existsById(updateAccount.getId())){
-            Customer customerEntity = customerRepository.getReferenceById(updateAccount.getId());
+            Optional<Customer> customerEntity1 = customerRepository.findById(updateAccount.getId());
+            if(customerEntity1.isEmpty()) throw new CustomerException("The Id is not valid");
+            Customer customerEntity=customerEntity1.get();
             customerEntity.setUserName(updateAccount.getUserName());
             customerEntity.setEmail(updateAccount.getEmail());
             customerEntity.setPassword(updateAccount.getPassword());

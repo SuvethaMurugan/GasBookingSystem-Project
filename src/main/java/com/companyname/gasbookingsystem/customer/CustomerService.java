@@ -18,7 +18,7 @@ public interface CustomerService {
 
     Customer updateProfile(UpdateDTO updateAccount) throws CustomerException;
     Customer loginUserMobileNo(String mobileNo, String password) throws CustomerException;
-    List<Cylinder> getAllCylindersOfMedical(CylinderType type);
+    List<Cylinder> getAllCylindersOfSpecifiedType(CylinderType type);
 
 }
 
