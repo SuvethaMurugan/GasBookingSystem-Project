@@ -6,6 +6,7 @@ import com.companyname.gasbookingsystem.booking.BookingService;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
+import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
 import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerService;
 import com.companyname.gasbookingsystem.customer.dto.*;
@@ -78,7 +79,8 @@ class GasBookingSystemApplicationTests {
 		   Assertions.assertThrows(PaymentException.class,()->paymentService.paymentCylinder(paymentUpdateDTO));
 
 		}
-		catch (CustomerException | InvalidPasswordException  | BookingNotFoundException| CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+		catch (CustomerException | InvalidPasswordException | BookingNotFoundException | CustomerNotExistsWithId |
+               AddCylinderException | InvalidEmailException | CylinderNotExistsWithId e) {
 			Assertions.fail(e.getMessage());
 		}
     }
@@ -101,6 +103,9 @@ class GasBookingSystemApplicationTests {
 		catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
 			System.out.println(e.getMessage());
 			Assertions.assertEquals("The Bank should be registered for the payment transaction",e.getMessage());
-		}
-	}
+		} catch (CylinderNotExistsWithId e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+

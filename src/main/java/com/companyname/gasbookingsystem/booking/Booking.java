@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +30,7 @@ public class Booking {
     private Payment payment;
     @OneToOne
     private Cylinder cylinder;
-    @OneToOne
+    @ManyToOne
     @JsonIgnore
     private Customer customer;
 }

@@ -51,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
         BookingStatusType bookingStatus=bookingId.getStatus();
         if(bookingStatus.equals(BookingStatusType.BOOKED)) throw new PaymentException("The payment for this booking is paid");
         Double price=bookingEntityOptional.get().getCylinder().getPrice();
-        Payment paymentEntity=null;
+        Payment paymentEntity;
         if(bookingId.getPayment()==null) {
             paymentEntity=new Payment();
             this.paymentRepository.save(paymentEntity);
@@ -66,7 +66,7 @@ public class PaymentServiceImpl implements PaymentService {
             this.bookingRepository.save(bookingId);
             paymentEntity.setPaymentStatus(PaymentStatusType.FAILED);
             this.paymentRepository.save(paymentEntity);
-            throw new PaymentException("The account balance is insufficent");
+            throw new PaymentException("The account balance is insufficient");
         }
         Double balance=bankId.getBalance()-price;
         bankId.setBalance(balance);

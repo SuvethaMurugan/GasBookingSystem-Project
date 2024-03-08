@@ -1,5 +1,7 @@
 package com.companyname.gasbookingsystem.admin;
 
+import com.companyname.gasbookingsystem.admin.DTO.AdminEmailDto;
+import com.companyname.gasbookingsystem.admin.DTO.AdminLoginDTO;
 import com.companyname.gasbookingsystem.admin.exception.AdminException;
 import com.companyname.gasbookingsystem.booking.Booking;
 import com.companyname.gasbookingsystem.booking.BookingRepository;
@@ -32,38 +34,39 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public Admin loginAdminID(Integer adminId, String password) throws AdminException {
-        Optional<Admin> adminLogin = adminRepository.findById(adminId);
+    public Admin loginAdminID(AdminLoginDTO adminLoginDto ) throws AdminException {
+        Optional<Admin> adminLogin = adminRepository.findById(adminLoginDto.getAdminId());
         if(adminLogin.isEmpty()) {
             throw new AdminException(MESSAGE);
         }
         Admin admin = adminLogin.get();
-        if (admin.getPassword().equals(password))
+        if (admin.getPassword().equals(adminLoginDto.getPassword()))
             return admin;
         else throw new AdminException(MESSAGE);
     }
 
+
     @Override
-    public Admin loginAdminEmail(String email, String password) throws AdminException {
-        Optional<Admin> adminEmailLogin = adminRepository.findByEmail(email);
+    public Admin loginAdminEmail(AdminEmailDto adminEmailDto) throws AdminException {
+        Optional<Admin> adminEmailLogin = adminRepository.findByEmail(adminEmailDto.getAdminEmail());
         if(adminEmailLogin.isEmpty()){
             throw new AdminException(MESSAGE);
         }
         Admin admin = adminEmailLogin.get();
-        if (admin.getPassword().equals(password))
+        if (admin.getPassword().equals(adminEmailDto.getPassword()))
             return admin;
         else
             throw new AdminException(MESSAGE);
     }
 
+
     @Override
-    public String adminLogout(String email, String password) {
+    public String adminLogout(AdminEmailDto adminEmailDto) {
         return "Logged Out Successfully";
     }
 
     @Override
     public List<Booking> getAllListOfCylinders() {
         return this.bookingRepository.findAllByDeliveryDate(LocalDate.now());
-
     }
 }
