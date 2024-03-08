@@ -10,6 +10,7 @@ import com.companyname.gasbookingsystem.booking.BookingStatusType;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
+import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
 import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerService;
 import com.companyname.gasbookingsystem.customer.dto.RegisterUserDTO;
@@ -90,6 +91,8 @@ class PaymentModuleTest {
         }
         catch (CustomerException | InvalidPasswordException  | BookingNotFoundException| CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
             Assertions.fail(e.getMessage());
+        } catch (CylinderNotExistsWithId e) {
+            throw new RuntimeException(e);
         }
     }
     @DisplayName("PaymentCreationWithoutBankAccountEqualsTest")
@@ -108,7 +111,8 @@ class PaymentModuleTest {
             paymentService.paymentCylinder(paymentUpdateDTO);
 
         }
-        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               CustomerNotExistsWithId | AddCylinderException | InvalidEmailException | CylinderNotExistsWithId e) {
             System.out.println(e.getMessage());
             Assertions.assertEquals("The Bank should be registered for the payment transaction",e.getMessage());
         }
@@ -134,6 +138,8 @@ class PaymentModuleTest {
         catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
             System.out.println(e.getMessage());
             Assertions.assertEquals("The Bank should be registered for the payment transaction",e.getMessage());
+        } catch (CylinderNotExistsWithId e) {
+            throw new RuntimeException(e);
         }
     }
     @DisplayName("PaymentWithLinkingBankAccountTest")
@@ -156,7 +162,9 @@ class PaymentModuleTest {
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
 
         }
-        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               BankUpdateException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException |
+               CylinderNotExistsWithId e) {
             System.out.println(e.getMessage());
            Assertions.fail(e.getMessage());
         }
@@ -182,7 +190,9 @@ class PaymentModuleTest {
             Assertions.assertThrows(PaymentException.class,()->paymentService.paymentCylinder(paymentUpdateDTO));
 
         }
-        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               BankUpdateException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException |
+               CylinderNotExistsWithId e) {
             System.out.println(e.getMessage());
             Assertions.fail(e.getMessage());
         }
@@ -208,7 +218,9 @@ class PaymentModuleTest {
             paymentService.paymentCylinder(paymentUpdateDTO);
 
         }
-        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               BankUpdateException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException |
+               CylinderNotExistsWithId e) {
             Assertions.assertEquals("The payment for this booking is paid", e.getMessage());
         }
     }
@@ -233,7 +245,8 @@ class PaymentModuleTest {
 
 
         }
-        catch (CustomerException | InvalidPasswordException  | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | BookingNotFoundException | BankUpdateException |
+               CustomerNotExistsWithId | AddCylinderException | InvalidEmailException | CylinderNotExistsWithId e) {
             Assertions.fail(e.getMessage());
         }
     }
@@ -258,7 +271,9 @@ class PaymentModuleTest {
 
 
         }
-        catch (CustomerException | InvalidPasswordException  |PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               BankUpdateException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException |
+               CylinderNotExistsWithId e) {
             Assertions.assertEquals("The account balance is insufficient", e.getMessage());
         }
     }
@@ -283,7 +298,9 @@ class PaymentModuleTest {
             Assertions.assertEquals(BookingStatusType.BOOKED, resbooking.getStatus());
             Assertions.assertEquals(PaymentStatusType.PAID, resbooking.getPayment().getPaymentStatus());
         }
-        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               BankUpdateException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException |
+               CylinderNotExistsWithId e) {
             Assertions.fail(e.getMessage());
         }
     }
@@ -370,6 +387,8 @@ class PaymentModuleTest {
         }
         catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
             Assertions.fail(e.getMessage());
+        } catch (CylinderNotExistsWithId e) {
+            throw new RuntimeException(e);
         }
     }
     @DisplayName("PaymentWithLinkingBankAccountTest")
@@ -391,7 +410,7 @@ class PaymentModuleTest {
 
         }
         catch (CustomerException | InvalidPasswordException | CustomerNotExistsWithId | AddCylinderException |
-               InvalidEmailException | BookingNotFoundException e) {
+               InvalidEmailException | BookingNotFoundException | CylinderNotExistsWithId e) {
             Assertions.fail(e.getMessage());
         }
     }
@@ -414,7 +433,8 @@ class PaymentModuleTest {
             Assertions.assertThrows(BankUpdateException.class,()->paymentService.bankLinkingAccount(bankLinkingDTO));
 
         }
-        catch (CustomerException | InvalidPasswordException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException | BookingNotFoundException e) {
+        catch (CustomerException | InvalidPasswordException | CustomerNotExistsWithId | AddCylinderException |
+               InvalidEmailException | BookingNotFoundException | CylinderNotExistsWithId e) {
             Assertions.fail(e.getMessage());
         }
     }
@@ -436,7 +456,8 @@ class PaymentModuleTest {
             paymentService.bankLinkingAccount(bankLinkingDTO);
 
         }
-        catch (CustomerException | InvalidPasswordException |BankUpdateException| CustomerNotExistsWithId | AddCylinderException | InvalidEmailException | BookingNotFoundException e) {
+        catch (CustomerException | InvalidPasswordException | BankUpdateException | CustomerNotExistsWithId |
+               AddCylinderException | InvalidEmailException | BookingNotFoundException | CylinderNotExistsWithId e) {
             Assertions.assertEquals("Customer doesn't exist",e.getMessage());
         }
     }
@@ -458,7 +479,8 @@ class PaymentModuleTest {
            paymentService.bankLinkingAccount(bankLinkingDTO);
 
         }
-        catch (CustomerException | InvalidPasswordException |BankUpdateException| CustomerNotExistsWithId | AddCylinderException | InvalidEmailException | BookingNotFoundException e) {
+        catch (CustomerException | InvalidPasswordException | BankUpdateException | CustomerNotExistsWithId |
+               AddCylinderException | InvalidEmailException | BookingNotFoundException | CylinderNotExistsWithId e) {
             Assertions.assertEquals("Entered User ID and Password doesn't exist",e.getMessage());
         }
     }
@@ -482,7 +504,9 @@ class PaymentModuleTest {
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
 
         }
-        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException| BankUpdateException |CustomerNotExistsWithId|AddCylinderException |InvalidEmailException e) {
+        catch (CustomerException | InvalidPasswordException | PaymentException | BookingNotFoundException |
+               BankUpdateException | CustomerNotExistsWithId | AddCylinderException | InvalidEmailException |
+               CylinderNotExistsWithId e) {
             System.out.println(e.getMessage());
             Assertions.fail(e.getMessage());
         }

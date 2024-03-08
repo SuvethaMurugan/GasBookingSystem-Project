@@ -2,7 +2,8 @@ package com.companyname.gasbookingsystem.booking;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
-import com.companyname.gasbookingsystem.booking.exception.NewBookingException;
+import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
+//import com.companyname.gasbookingsystem.booking.exception.NewBookingException;
 import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerRepository;
 import com.companyname.gasbookingsystem.cylinder.Cylinder;
@@ -40,14 +41,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking createBooking(BookingDTO bookingDTO) throws NewBookingException, BookingNotFoundException, CustomerNotExistsWithId {
+    public Booking createBooking(BookingDTO bookingDTO) throws BookingNotFoundException, CustomerNotExistsWithId, CylinderNotExistsWithId {
         Optional<Customer> customerIdOptional=this.customerRepository.findById(bookingDTO.getCustomerId());
         if(!customerIdOptional.isPresent()){
-            throw new CustomerNotExistsWithId("Id"+bookingDTO.getCustomerId());
+            throw new CustomerNotExistsWithId("Customer does not exist with id");
         }
         Optional<Cylinder> cylinderIdOptional=this.cylinderRepository.findById(bookingDTO.getCylinderId());
         if(!cylinderIdOptional.isPresent()){
-            throw new CustomerNotExistsWithId("Id"+bookingDTO.getCylinderId());
+            throw new CylinderNotExistsWithId("Cylinder does not exist with id");
         }
         Customer customerId=customerIdOptional.get();
         Cylinder cylinderId=cylinderIdOptional.get();

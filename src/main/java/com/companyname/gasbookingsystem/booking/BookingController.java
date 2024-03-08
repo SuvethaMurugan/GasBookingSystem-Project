@@ -4,7 +4,7 @@ package com.companyname.gasbookingsystem.booking;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
-import com.companyname.gasbookingsystem.booking.exception.NewBookingException;
+import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
 import org.springframework.web.bind.annotation.*;
 
         import java.util.List;
@@ -20,7 +20,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody BookingDTO bookingDTO) throws NewBookingException, BookingNotFoundException, CustomerNotExistsWithId {
+    public Booking createBooking(@RequestBody BookingDTO bookingDTO) throws  BookingNotFoundException, CustomerNotExistsWithId, CylinderNotExistsWithId {
         return this.bookingService.createBooking(bookingDTO);
     }
 

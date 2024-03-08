@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
