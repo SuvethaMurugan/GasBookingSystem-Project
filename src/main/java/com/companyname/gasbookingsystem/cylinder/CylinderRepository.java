@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CylinderRepository extends JpaRepository<Cylinder,Integer> {
     List<Cylinder> findAllByType(CylinderType type);
+
 }

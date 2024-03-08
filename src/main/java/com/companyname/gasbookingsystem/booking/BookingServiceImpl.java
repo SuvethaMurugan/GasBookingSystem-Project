@@ -57,6 +57,7 @@ public class BookingServiceImpl implements BookingService {
         this.cylinderRepository.save(cylinderId);
         Booking booking =new Booking();
         booking.setCylinder(cylinderId);
+        booking.setCustomer(customerId);
         booking.setStatus(BookingStatusType.PENDING);
         this.bookingRepository.save(booking);
         customerId.getBookingList().add(booking);

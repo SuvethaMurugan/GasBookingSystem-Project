@@ -40,6 +40,9 @@ public class CustomerServiceImpl implements CustomerService {
         Customer nameLogin= this.customerRepository.findByUserName(registeruser.getUserName());
         String mobileNumLength = registeruser.getMobileNo();
         if (mobileNumLength.length() > 10){
+            throw new CustomerException("Enter a valid Mobile Number (length=10)");
+        }
+        if (mobileNumLength.length() < 10){
             throw new CustomerException("Enter a valid Mobile Number");
         }
         if(mobileNum != null ) {
@@ -64,9 +67,8 @@ public class CustomerServiceImpl implements CustomerService {
             address.setPinCode(registeruser.getAddress().getPinCode());
             this.addressRepository.save(address);
             return customerRepository.save(customerEntity);
-        }else{
-            return null;
         }
+        throw new CustomerException("Register using valid details");
     }
     public boolean passwordValidator(String password) throws InvalidPasswordException {
         String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
@@ -74,7 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
         Matcher matcher = pattern.matcher(password);
         if(matcher.matches()){
             return true;
-        }else{
+        }
+        else{
             throw new InvalidPasswordException("Password should not contain any space.Password should contain at least one digit(0-9).Password length should be between 8 to 15 characters.Password should contain at least one lowercase letter(a-z).Password should contain at least one uppercase letter(A-Z).Password should contain at least one special character ( @, #, %, &, !, $, etc….).");
         }
     }
@@ -92,12 +95,12 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer loginUserMobileNo(String mobileNo, String password) throws CustomerException {
         Customer mobileNumLogin = this.customerRepository.findByMobileNo(mobileNo);
         if(mobileNumLogin == null) throw new CustomerException("Mobile Number doesn't exist, Login using registered Mobile Number");
-        if(mobileNumLogin.equals(mobileNo) && mobileNumLogin.equals(password)){
+        if(mobileNumLogin != null && mobileNumLogin.equals(mobileNo) && mobileNumLogin.equals(password)){
             return this.customerRepository.findByMobileNoAndPassword(mobileNo,password);
-        }
-        else if (mobileNumLogin != null && mobileNumLogin.getPassword().equals(password)) {
+        } else if (mobileNumLogin != null && mobileNumLogin.getPassword().equals(password)) {
             return this.customerRepository.findByMobileNo(mobileNo);
-        }else{
+        }
+        else{
             throw new CustomerException("Credentials doesn't match");
         }
     }
@@ -116,31 +119,34 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
     @Override
-    public List<Cylinder> getAllCylindersOfMedical(CylinderType type) {
+    public List<Cylinder> getAllCylindersOfSpecifiedType(CylinderType type) {
          return this.cylinderRepository.findAllByType(type);
     }
     @Override
     public Customer updateProfile(UpdateDTO updateAccount) throws CustomerException {
         if (customerRepository.existsById(updateAccount.getId())){
-            Customer customerEntity = customerRepository.getReferenceById(updateAccount.getId());
+            Optional<Customer> customerEntity1 = customerRepository.findById(updateAccount.getId());
+            if(customerEntity1.isEmpty()) throw new CustomerException("The Id is not valid");
+            Customer customerEntity=customerEntity1.get();
             customerEntity.setUserName(updateAccount.getUserName());
             customerEntity.setEmail(updateAccount.getEmail());
             customerEntity.setPassword(updateAccount.getPassword());
             customerEntity.setMobileNo(updateAccount.getMobileNo());
             customerEntity.setActive(updateAccount.isActive());
-            Address address = new Address();
-            address.setDoorNo(updateAccount.getAddress().getDoorNo());
-            address.setStreetName(updateAccount.getAddress().getStreetName());
-            address.setCity(updateAccount.getAddress().getCity());
-            address.setPinCode(updateAccount.getAddress().getPinCode());
-            this.addressRepository.save(address);
-            customerEntity.setAddress(address);
-            return customerRepository.save(customerEntity);
+            if(addressRepository.existsById(updateAccount.getId())) {
+                Address address = new Address();
+                address.setDoorNo(updateAccount.getAddress().getDoorNo());
+                address.setStreetName(updateAccount.getAddress().getStreetName());
+                address.setCity(updateAccount.getAddress().getCity());
+                address.setPinCode(updateAccount.getAddress().getPinCode());
+                this.addressRepository.save(address);
+                customerEntity.setAddress(address);
+                return customerRepository.save(customerEntity);
+            }
         }else {
             throw new CustomerException("Enter valid Customer Details");
         }
+        throw new CustomerException("Enter valid Customer Details");
     }
-
-
 }
 
