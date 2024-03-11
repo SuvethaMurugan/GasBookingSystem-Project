@@ -70,7 +70,7 @@ public class CylinderTest {
     public void getCylinderByIdTest()
     {
 
-       CylinderDTO cylinderDTO=new CylinderDTO(CylinderType.Medical,5.0,500.0);
+        CylinderDTO cylinderDTO=new CylinderDTO(CylinderType.Medical,5.0,500.0);
 
         try {
 
@@ -140,11 +140,12 @@ public class CylinderTest {
         }
     }
     @Test
-    @DisplayName("UpdateCylinder Price less than 500 Test")
-    public void updateCylinderPriceLessThan500Test()
+
+    @DisplayName("UpdateCylinderPrice Negative Test")
+    public void updateCylinderPriceNegativeTest()
     {
-        CylinderDTO cylinderDTO=new CylinderDTO(CylinderType.Medical,5.0,600.0);
-        try {
+        CylinderDTO cylinderDTO=new CylinderDTO(CylinderType.Medical,5.0,-1.0);
+      try {
             cylinder=cylinderService.addCylinder(cylinderDTO);
             Assertions.assertThrows(UpdateCylinderException.class,
                     ()->cylinderService.updateCylinder(cylinder).getPrice());

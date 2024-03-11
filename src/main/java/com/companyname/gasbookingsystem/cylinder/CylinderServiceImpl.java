@@ -30,11 +30,11 @@ public class CylinderServiceImpl implements CylinderService{
     public Cylinder addCylinder(CylinderDTO cylinder) throws AddCylinderException {
         if(cylinder.getWeight()==null)
         {
-            throw new AddCylinderException("Cylinder Weight cant be null");
+            throw new AddCylinderException("cylinder Weight Cant be null");
         }
         if(cylinder.getPrice()==null)
         {
-            throw new AddCylinderException("Cylinder price cant be null");
+            throw new AddCylinderException("cylinder Price cant be null");
         }
         Cylinder cylinder1=new Cylinder();
         cylinder1.setType(cylinder.getType());
@@ -62,11 +62,12 @@ public class CylinderServiceImpl implements CylinderService{
     public Cylinder updateCylinder(Cylinder cylinder) throws UpdateCylinderException {
         if(cylinder.getWeight()<5)
         {
-            throw new UpdateCylinderException("It is an used Cylinder add an unused Cylinder");
+            throw new UpdateCylinderException("cylinder Weight be greater than 5kg");
         }
-        if(cylinder.getPrice()>500.0)
+        if(cylinder.getPrice()<0)
         {
-            throw new UpdateCylinderException("Standard Cylinder price is 500");
+            throw new UpdateCylinderException("Price cant be negative");
+  
         }
         return cylinderRepository.save(cylinder);
     }
