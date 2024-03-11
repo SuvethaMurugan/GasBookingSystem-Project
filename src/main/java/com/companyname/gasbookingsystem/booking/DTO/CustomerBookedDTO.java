@@ -1,23 +1,22 @@
-package com.companyname.gasbookingsystem.cylinder.dto;
+package com.companyname.gasbookingsystem.booking.DTO;
 
 import com.companyname.gasbookingsystem.booking.BookingStatusType;
 import com.companyname.gasbookingsystem.cylinder.CylinderType;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class BookedCylinderDTO {
+public class CustomerBookedDTO {
     private Integer id;
+    private Integer cylinderid;
     private LocalDate bookingDate;
-    private Integer customerid;
     private LocalDate deliveryDate;
     private BookingStatusType status;
-    private Integer cylinderid;
     private CylinderType cylinderType;
 }

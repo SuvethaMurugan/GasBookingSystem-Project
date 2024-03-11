@@ -2,6 +2,7 @@ package com.companyname.gasbookingsystem.booking;
 
 
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
+import com.companyname.gasbookingsystem.booking.DTO.CustomerBookedDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
 import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/booking")
+@CrossOrigin(origins = "http://localhost:4200")
 public class BookingController {
 
     private final BookingService bookingService;
@@ -37,6 +39,10 @@ public class BookingController {
     @PutMapping("/id")
     public Booking updateBooking(@RequestBody Booking booking) throws BookingNotFoundException {
         return this.bookingService.updateBooking(booking);
+    }
+    @GetMapping("customer/{id}")
+    public List<CustomerBookedDTO> getBookingsByCustomerId(@PathVariable("id") Integer id) throws BookingNotFoundException {
+        return this.bookingService.getBookingByCustomerID(id);
     }
 
 

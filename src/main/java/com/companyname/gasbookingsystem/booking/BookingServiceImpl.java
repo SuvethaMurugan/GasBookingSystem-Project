@@ -1,5 +1,6 @@
 package com.companyname.gasbookingsystem.booking;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
+import com.companyname.gasbookingsystem.booking.DTO.CustomerBookedDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
 import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
@@ -8,9 +9,11 @@ import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerRepository;
 import com.companyname.gasbookingsystem.cylinder.Cylinder;
 import com.companyname.gasbookingsystem.cylinder.CylinderRepository;
+import com.companyname.gasbookingsystem.cylinder.dto.BookedCylinderDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -72,6 +75,24 @@ public class BookingServiceImpl implements BookingService {
         }
         booking.setId(booking.getId());
         return bookingRepository.save(booking);
+    }
+
+    @Override
+    public List<CustomerBookedDTO> getBookingByCustomerID(Integer id) {
+        List<Booking> bookingList=new ArrayList<>(bookingRepository.findAll());
+        List<Booking> list=bookingList.stream().filter(booking ->booking.getCustomer().getId().equals(id)).toList();
+        List<CustomerBookedDTO>customerBookedDTOList=new ArrayList<>();
+        for(Booking s:list){
+            CustomerBookedDTO customerbookedDTO=new CustomerBookedDTO();
+            customerbookedDTO.setBookingDate(s.getBookingDate());
+            customerbookedDTO.setId(s.getId());
+            customerbookedDTO.setCylinderid(s.getCylinder().getCylinderId());
+            customerbookedDTO.setCylinderType(s.getCylinder().getType());
+            customerbookedDTO.setStatus(s.getStatus());
+            customerBookedDTOList.add(customerbookedDTO);
+
+        }
+        return customerBookedDTOList;
     }
 
 

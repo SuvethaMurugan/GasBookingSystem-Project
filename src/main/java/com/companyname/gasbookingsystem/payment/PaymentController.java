@@ -9,6 +9,8 @@ import com.companyname.gasbookingsystem.payment.dto.BankLinkingDTO;
 import com.companyname.gasbookingsystem.payment.exception.BankUpdateException;
 import com.companyname.gasbookingsystem.payment.exception.PaymentException;
 import com.companyname.gasbookingsystem.payment.dto.PaymentUpdateDTO;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +23,11 @@ public class PaymentController {
     }
 
     @PostMapping("/book/payment")
-    public Booking paymentForCylinder(@RequestBody PaymentUpdateDTO paymentDTO) throws PaymentException {
+    public Booking paymentForCylinder(@Valid @RequestBody PaymentUpdateDTO paymentDTO) throws PaymentException {
         return this.paymentService.paymentCylinder(paymentDTO);
     }
     @PatchMapping("/bank")
-    public Customer updateBankAccount(@RequestBody BankLinkingDTO bankUpdateDTO) throws BankUpdateException {
+    public Customer updateBankAccount(@Valid @RequestBody BankLinkingDTO bankUpdateDTO) throws BankUpdateException {
         return this.paymentService.bankLinkingAccount(bankUpdateDTO);
     }
     @GetMapping("/transaction/{id}")
