@@ -11,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
-
+        @NotNull(message = "Cylinder ID should not be null")
         private Integer customerId;
-
+        @NotNull(message = "Customer ID should not be null")
         private Integer cylinderId;
 }
 

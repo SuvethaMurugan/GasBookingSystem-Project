@@ -16,20 +16,27 @@ import java.util.Map;
 @ControllerAdvice
 public class BookingControllerAdvice {
 
-//    @ExceptionHandler(NewBookingException.class)
-//    public ResponseEntity<String> handleBookingException(NewBookingException ex) {
-//        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-//    }
     @ExceptionHandler(BookingNotFoundException.class)
     public ResponseEntity<String> handleBookingNotFoundException(BookingNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(CustomerNotExistsWithId.class)
     public ResponseEntity<String> handleCustomerException(CustomerNotExistsWithId ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
-
-
-    // Add other exception handlers as needed
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
+    }
 }
+
+
+

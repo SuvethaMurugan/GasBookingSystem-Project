@@ -23,7 +23,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody BookingDTO bookingDTO) throws  BookingNotFoundException, CustomerNotExistsWithId, CylinderNotExistsWithId {
+    public Booking createBooking(@Valid@RequestBody BookingDTO bookingDTO) throws  BookingNotFoundException, CustomerNotExistsWithId, CylinderNotExistsWithId {
         return this.bookingService.createBooking(bookingDTO);
     }
 
@@ -38,7 +38,7 @@ public class BookingController {
     }
 
     @PutMapping("/id")
-    public Booking updateBooking(@RequestBody Booking booking) throws BookingNotFoundException {
+    public Booking updateBooking(@Valid@RequestBody Booking booking) throws BookingNotFoundException {
         return this.bookingService.updateBooking(booking);
     }
     @GetMapping("customer/{id}")
