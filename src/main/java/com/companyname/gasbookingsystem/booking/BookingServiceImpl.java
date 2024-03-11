@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class BookingServiceImpl implements BookingService {
-
     private final BookingRepository bookingRepository;
     private final CustomerRepository customerRepository;
     private final CylinderRepository cylinderRepository;
