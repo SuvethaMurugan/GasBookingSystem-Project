@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BankLinkingDTO {
-    @NotNull
+    @NotNull(message = "Value is greater than 0")
     @Min(value = 1, message = "Value must be greater than or equal to 1")
     private Integer customerId;
     @NotNull
