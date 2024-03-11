@@ -461,7 +461,7 @@ class BookingTest {
         }
 
         try {
-            bookingService.updateBooking(booking);
+            bookingService.updateBooking(new Booking(1,));
         } catch (BookingNotFoundException e) {
             throw new RuntimeException(e);
         }

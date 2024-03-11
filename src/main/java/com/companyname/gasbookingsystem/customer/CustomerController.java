@@ -17,7 +17,6 @@ import com.companyname.gasbookingsystem.customer.dto.UserNameLoginDTO;
 
 import javax.security.auth.login.AccountException;
 
-
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 public class CustomerController {

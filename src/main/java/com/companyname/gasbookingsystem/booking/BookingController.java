@@ -6,6 +6,7 @@ import com.companyname.gasbookingsystem.booking.DTO.CustomerBookedDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
 import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
         import java.util.List;
