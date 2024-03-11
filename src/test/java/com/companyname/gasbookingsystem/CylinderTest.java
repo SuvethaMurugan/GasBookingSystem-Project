@@ -140,11 +140,12 @@ public class CylinderTest {
         }
     }
     @Test
+
     @DisplayName("UpdateCylinderPrice Negative Test")
     public void updateCylinderPriceNegativeTest()
     {
         CylinderDTO cylinderDTO=new CylinderDTO(CylinderType.Medical,5.0,-1.0);
-        try {
+      try {
             cylinder=cylinderService.addCylinder(cylinderDTO);
             Assertions.assertThrows(UpdateCylinderException.class,
                     ()->cylinderService.updateCylinder(cylinder).getPrice());

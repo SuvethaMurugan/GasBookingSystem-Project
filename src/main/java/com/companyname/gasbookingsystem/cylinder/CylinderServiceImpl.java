@@ -67,6 +67,7 @@ public class CylinderServiceImpl implements CylinderService{
         if(cylinder.getPrice()<0)
         {
             throw new UpdateCylinderException("Price cant be negative");
+  
         }
         return cylinderRepository.save(cylinder);
     }
