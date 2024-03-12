@@ -270,6 +270,7 @@ import com.companyname.gasbookingsystem.cylinder.CylinderService;
 import com.companyname.gasbookingsystem.cylinder.CylinderType;
 import com.companyname.gasbookingsystem.cylinder.dto.CylinderDTO;
 import com.companyname.gasbookingsystem.cylinder.exception.AddCylinderException;
+import com.companyname.gasbookingsystem.cylinder.exception.UpdateCylinderException;
 import com.companyname.gasbookingsystem.payment.PaymentService;
 import com.companyname.gasbookingsystem.payment.dto.PaymentUpdateDTO;
 import com.companyname.gasbookingsystem.payment.exception.PaymentException;
@@ -435,7 +436,7 @@ class BookingTest {
     void updateBookingTest() {
 
         Cylinder cylinder = null;
-        Booking booking = null;
+        Booking booking=null;
 
 
         try {
@@ -453,19 +454,20 @@ class BookingTest {
         } catch (AddCylinderException e) {
             throw new RuntimeException(e);
         }
-        BookingDTO bookingDTO = new BookingDTO(customer.getId(), cylinder.getCylinderId());
+        BookingDTO bookingDTO = new BookingDTO(1, 1);
         try {
             booking = bookingService.createBooking(bookingDTO);
         } catch (BookingNotFoundException | CylinderNotExistsWithId | CustomerNotExistsWithId e) {
             throw new RuntimeException(e);
         }
 
+//
         try {
-            bookingService.updateBooking(new Booking(1,));
+            bookingService.updateBooking(booking);
         } catch (BookingNotFoundException e) {
             throw new RuntimeException(e);
-        }
-    }
+        }}
+
     @Test
     void getBookingByIdTest() {
         customer = new Customer();
