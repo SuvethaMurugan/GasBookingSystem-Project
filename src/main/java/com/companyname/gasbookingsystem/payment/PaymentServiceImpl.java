@@ -45,6 +45,8 @@ public class PaymentServiceImpl implements PaymentService {
         Optional<Bank> bankEntityOptional=this.bankRepository.findById(customerId.getBank().getBankId());
         if(bankEntityOptional.isEmpty()) throw new PaymentException("The bank ID id not found! Create a bank Account");
         Bank bankId=bankEntityOptional.get();
+        String password=customerId.getBank().getPassword();
+        if(!paymentDTO.getPassword().equals(password)) throw  new PaymentException(("The entered password is wrong"));
         Optional<Booking> bookingEntityOptional=this.bookingRepository.findById(paymentDTO.getBookingId());
         if(bookingEntityOptional.isEmpty()) throw new PaymentException("The entered Id doesn't exist for the Customer! Enter an valid booking id");
         Booking bookingId=bookingEntityOptional.get();

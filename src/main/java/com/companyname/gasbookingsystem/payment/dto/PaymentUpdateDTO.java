@@ -18,4 +18,6 @@ public class PaymentUpdateDTO {
     @NotNull(message = "Booking Id should not be null")
     @Min(value = 1, message = "Value must be greater than or equal to 1")
     private Integer bookingId;
+    private String password;
+
 }

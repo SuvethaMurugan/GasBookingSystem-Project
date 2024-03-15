@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class PaymentController {
     private final PaymentService paymentService;
     public PaymentController(PaymentService paymentService) {
