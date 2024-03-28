@@ -75,7 +75,7 @@ class GasBookingSystemApplicationTests {
 		   cylinder=cylinderService.addCylinder(cylinderDTO);
 		   BookingDTO bookingDTO=new BookingDTO(customer.getId(), cylinder.getCylinderId());
 		   booking=bookingService.createBooking(bookingDTO);
-			PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+			PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),"");
 		   Assertions.assertThrows(PaymentException.class,()->paymentService.paymentCylinder(paymentUpdateDTO));
 
 		}
@@ -96,7 +96,7 @@ class GasBookingSystemApplicationTests {
 			cylinder=cylinderService.addCylinder(cylinderDTO);
 			BookingDTO bookingDTO=new BookingDTO(customer.getId(), cylinder.getCylinderId());
 			booking=bookingService.createBooking(bookingDTO);
-			PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+			PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),"");
 			paymentService.paymentCylinder(paymentUpdateDTO);
 
 		}

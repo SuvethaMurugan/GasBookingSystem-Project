@@ -1,9 +1,12 @@
 package com.companyname.gasbookingsystem.booking;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
 import com.companyname.gasbookingsystem.booking.DTO.CustomerBookedDTO;
+import com.companyname.gasbookingsystem.booking.DTO.RefillCylinderDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
 import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
+import com.companyname.gasbookingsystem.cylinder.Cylinder;
+import com.companyname.gasbookingsystem.payment.exception.PaymentException;
 
 import java.util.List;
 public interface BookingService {
@@ -18,6 +21,8 @@ public interface BookingService {
 
 
     List<CustomerBookedDTO> getBookingByCustomerID(Integer id);
+
+    Cylinder refillBooking(RefillCylinderDTO refillCylinderDTO) throws CylinderNotExistsWithId, BookingNotFoundException, PaymentException, CustomerNotExistsWithId;
 }
 
 

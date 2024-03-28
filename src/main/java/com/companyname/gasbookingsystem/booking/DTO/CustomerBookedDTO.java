@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class CustomerBookedDTO {
     private Integer id;
     private Integer cylinderid;
+    private Integer bookingid;
     private LocalDate bookingDate;
     private LocalDate deliveryDate;
     private BookingStatusType status;

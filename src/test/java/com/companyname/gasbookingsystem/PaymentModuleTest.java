@@ -85,7 +85,7 @@ class PaymentModuleTest {
             cylinder=cylinderService.addCylinder(cylinderDTO);
             BookingDTO bookingDTO=new BookingDTO(customer.getId(), cylinder.getCylinderId());
             booking=bookingService.createBooking(bookingDTO);
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),"");
             Assertions.assertThrows(PaymentException.class,()->paymentService.paymentCylinder(paymentUpdateDTO));
 
         }
@@ -107,7 +107,7 @@ class PaymentModuleTest {
             cylinder=cylinderService.addCylinder(cylinderDTO);
             BookingDTO bookingDTO=new BookingDTO(customer.getId(), cylinder.getCylinderId());
             booking=bookingService.createBooking(bookingDTO);
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),"");
             paymentService.paymentCylinder(paymentUpdateDTO);
 
         }
@@ -131,7 +131,7 @@ class PaymentModuleTest {
             BookingDTO bookingDTO=new BookingDTO(customer.getId(), cylinder.getCylinderId());
             booking=bookingService.createBooking(bookingDTO);
             Assertions.assertNotNull(bankService.createAccount(createBankDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),"");
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
 
         }
@@ -158,7 +158,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),bank.getPassword());
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
 
         }
@@ -185,7 +185,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),bank.getPassword());
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
             Assertions.assertThrows(PaymentException.class,()->paymentService.paymentCylinder(paymentUpdateDTO));
 
@@ -213,7 +213,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
             paymentService.paymentCylinder(paymentUpdateDTO);
 
@@ -240,7 +240,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO1);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(), bank.getPassword());
             Assertions.assertThrows(PaymentException.class,()->paymentService.paymentCylinder(paymentUpdateDTO));
 
 
@@ -266,7 +266,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO1);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(), bank.getPassword());
             paymentService.paymentCylinder(paymentUpdateDTO);
 
 
@@ -293,7 +293,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(), bank.getPassword());
            Booking resbooking=paymentService.paymentCylinder(paymentUpdateDTO);
             Assertions.assertEquals(BookingStatusType.BOOKED, resbooking.getStatus());
             Assertions.assertEquals(PaymentStatusType.PAID, resbooking.getPayment().getPaymentStatus());
@@ -376,7 +376,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),bank.getPassword());
             Booking resbooking=paymentService.paymentCylinder(paymentUpdateDTO);
             Assertions.assertEquals(LocalDate.now(), resbooking.getPayment().getPaymentDate());
             Assertions.assertEquals("Online Mode",resbooking.getPayment().getPaymentType());
@@ -500,7 +500,7 @@ class PaymentModuleTest {
             bank=bankService.createAccount(createBankDTO);
             BankLinkingDTO bankLinkingDTO=new BankLinkingDTO(customer.getId(), bank.getBankId(), bank.getPassword());
             Assertions.assertNotNull(paymentService.bankLinkingAccount(bankLinkingDTO));
-            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId());
+            PaymentUpdateDTO paymentUpdateDTO=new PaymentUpdateDTO(customer.getId(), booking.getId(),bank.getPassword());
             Assertions.assertNotNull(paymentService.paymentCylinder(paymentUpdateDTO));
 
         }

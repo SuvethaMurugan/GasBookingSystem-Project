@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("admin")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
 public class CylinderController {
 
     private final CylinderService cylinderService;

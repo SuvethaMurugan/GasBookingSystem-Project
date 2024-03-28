@@ -19,7 +19,7 @@ import javax.security.auth.login.AccountException;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
 public class CustomerController {
     private final CustomerService customerService;
 
