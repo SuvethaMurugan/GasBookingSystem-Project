@@ -6,8 +6,8 @@ import com.companyname.gasbookingsystem.cylinder.CylinderRepository;
 import com.companyname.gasbookingsystem.cylinder.CylinderType;
 
 import java.util.List;
-    
-    
+
+
 import com.companyname.gasbookingsystem.address.Address;
 import com.companyname.gasbookingsystem.address.AddressRepository;
 import com.companyname.gasbookingsystem.customer.exception.CustomerException;
@@ -60,11 +60,12 @@ public class CustomerServiceImpl implements CustomerService {
             customerEntity.setActive(Boolean.TRUE);
             Address address = new Address();
             this.addressRepository.save(address);
-            customerEntity.setAddress(address);
+
             address.setDoorNo(registeruser.getAddress().getDoorNo());
             address.setStreetName(registeruser.getAddress().getStreetName());
             address.setCity(registeruser.getAddress().getCity());
             address.setPinCode(registeruser.getAddress().getPinCode());
+            customerEntity.setAddress(address);
             this.addressRepository.save(address);
             return customerRepository.save(customerEntity);
         }

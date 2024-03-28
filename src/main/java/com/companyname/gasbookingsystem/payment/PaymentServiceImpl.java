@@ -79,7 +79,7 @@ public class PaymentServiceImpl implements PaymentService {
         paymentEntity.setPaymentAmount(price);
         bookingId.setStatus(BookingStatusType.BOOKED);
         bookingId.setBookingDate(LocalDate.now());
-        bookingId.setDeliveryDate(LocalDate.now().plusDays(3));
+        bookingId.setDeliveryDate(LocalDate.now());
         bookingId.setPayment(paymentEntity);
         this.paymentRepository.save(paymentEntity);
         this.customerRepository.save(customerId);

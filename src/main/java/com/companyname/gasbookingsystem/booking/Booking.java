@@ -28,7 +28,8 @@ public class Booking {
     private BookingStatusType status;
     @OneToOne
     private Payment payment;
-    @OneToOne
+    @ManyToOne
+    @JsonIgnore
     private Cylinder cylinder;
     @ManyToOne
     @JsonIgnore

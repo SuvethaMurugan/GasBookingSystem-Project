@@ -6,14 +6,13 @@ import com.companyname.gasbookingsystem.admin.DTO.AdminLoginDTO;
 import com.companyname.gasbookingsystem.admin.exception.AdminException;
 import com.companyname.gasbookingsystem.booking.Booking;
 import com.companyname.gasbookingsystem.customer.Customer;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
 public class AdminController {
     private final AdminService adminService;
 

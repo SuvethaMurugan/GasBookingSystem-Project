@@ -1,15 +1,15 @@
 package com.companyname.gasbookingsystem.booking;
 import com.companyname.gasbookingsystem.booking.DTO.BookingDTO;
 import com.companyname.gasbookingsystem.booking.DTO.CustomerBookedDTO;
+import com.companyname.gasbookingsystem.booking.DTO.RefillCylinderDTO;
 import com.companyname.gasbookingsystem.booking.exception.BookingNotFoundException;
 import com.companyname.gasbookingsystem.booking.exception.CustomerNotExistsWithId;
 import com.companyname.gasbookingsystem.booking.exception.CylinderNotExistsWithId;
-//import com.companyname.gasbookingsystem.booking.exception.NewBookingException;
 import com.companyname.gasbookingsystem.customer.Customer;
 import com.companyname.gasbookingsystem.customer.CustomerRepository;
 import com.companyname.gasbookingsystem.cylinder.Cylinder;
 import com.companyname.gasbookingsystem.cylinder.CylinderRepository;
-import com.companyname.gasbookingsystem.cylinder.dto.BookedCylinderDTO;
+import com.companyname.gasbookingsystem.payment.exception.PaymentException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,5 +94,30 @@ public class BookingServiceImpl implements BookingService {
         return customerBookedDTOList;
     }
 
+    @Override
+    public Cylinder refillBooking(RefillCylinderDTO refillCylinderDTO) throws CylinderNotExistsWithId, BookingNotFoundException, PaymentException, CustomerNotExistsWithId {
+        Optional<Cylinder> cylinderIdOptional=this.cylinderRepository.findById(refillCylinderDTO.getCylinderId());
+        if(!cylinderIdOptional.isPresent()){
+            throw new CylinderNotExistsWithId("Cylinder does not exist with id");
+        }
+        Optional<Customer> customerIdOptional=this.customerRepository.findById(refillCylinderDTO.getCustomerId());
+        if(!customerIdOptional.isPresent()){
+            throw new CustomerNotExistsWithId("Customer does not exist with id");
+        }
+        Customer customerId=customerIdOptional.get();
+        Optional<Booking> bookingEntityOptional=this.bookingRepository.findById(refillCylinderDTO.getBookingId());
+        if(bookingEntityOptional.isEmpty()) throw new PaymentException("The entered Id doesn't exist for the Customer! Enter an valid booking id");
+        Booking bookingId=bookingEntityOptional.get();
+        bookingId.setStatus(BookingStatusType.SURRENDERED);
+        Cylinder cylinderId=cylinderIdOptional.get();
+        cylinderId.setIsActive(Boolean.TRUE);
+        this.cylinderRepository.save(cylinderId);
+        this.bookingRepository.save(bookingId);
+        this.customerRepository.save(customerId);
+        return cylinderId;
+
+
+
+    }
 
 }
